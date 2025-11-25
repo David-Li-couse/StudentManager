@@ -8,4 +8,5 @@
   开发语言：Java
   JDK版本：21.0.6
   Maven版本：3.6.1
+  Javafx版本：21.0.9
   数据库：MySQL 8.0
