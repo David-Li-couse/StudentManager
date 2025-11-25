@@ -14,4 +14,7 @@
 #快速开始
   1.将/src/main/rescourse/mysql.sql脚本在你的mysql上执行
   2.在/src/main/resourse/application.properties中修改数据库连接信息
-  3.运行MainApp.java
+  3.安装正确版本的JDK，Maven，Javafx
+  4.同步maven项目
+  5.添加MainApp.java配置：--module-path "你的javafx的lib路径" --add-modules javafx.controls,javafx.fxml
+  6.运行MainApp.java
