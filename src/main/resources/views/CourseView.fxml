@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane fx:id="courseView" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.school.studentms.controller.CourseController">
+
+    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"
+          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="课程管理" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <Button text="返回学生管理" onAction="#handleBackToStudent" style="-fx-font-size: 14px;"/>
+        </HBox>
+        <Separator />
+
+        <VBox spacing="10" VBox.vgrow="ALWAYS">
+            <!-- 课程管理部分 -->
+            <VBox spacing="5">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="课程管理" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    <Button text="刷新课程" onAction="#handleRefreshCourses" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <TextField fx:id="courseSearchField" promptText="按课程代码或名称搜索..." prefWidth="200"/>
+                    <Button text="搜索" onAction="#handleCourseSearch"/>
+                    <Button text="清空" onAction="#clearCourseSearch"/>
+                </HBox>
+
+                <TableView fx:id="courseTable" prefHeight="150">
+                    <columns>
+                        <TableColumn fx:id="colCourseCode" text="课程代码" prefWidth="100" />
+                        <TableColumn fx:id="colCourseName" text="课程名称" prefWidth="200" />
+                    </columns>
+                </TableView>
+
+                <GridPane hgap="5" vgap="5">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+
+                    <Label text="课程代码：" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <TextField fx:id="courseCodeField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                    <Label text="课程名称：" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                    <TextField fx:id="courseNameField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                </GridPane>
+
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="新增课程" fx:id="addCourseButton" onAction="#handleAddCourse" />
+                    <Button text="修改课程" fx:id="updateCourseButton" onAction="#handleUpdateCourse" />
+                    <Button text="删除课程" fx:id="deleteCourseButton" onAction="#handleDeleteCourse" />
+                </HBox>
+            </VBox>
+
+            <Separator />
+
+            <!-- 学生分配和成绩管理部分 -->
+            <HBox spacing="20" VBox.vgrow="ALWAYS">
+                <!-- 所有学生列表 -->
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="所有学生列表" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <Button text="刷新学生" onAction="#handleRefreshAllStudents" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                    </HBox>
+                    <TableView fx:id="allStudentsTable" prefHeight="200">
+                        <columns>
+                            <TableColumn fx:id="colAllStudentId" text="学号" prefWidth="80" />
+                            <TableColumn fx:id="colAllStudentName" text="姓名" prefWidth="80" />
+                            <TableColumn fx:id="colAllStudentGender" text="性别" prefWidth="60" />
+                            <TableColumn fx:id="colAllStudentMajor" text="专业" prefWidth="120" />
+                        </columns>
+                    </TableView>
+                    <Button text="分配学生到课程" fx:id="assignStudentButton" onAction="#handleAssignStudent"
+                            alignment="CENTER_RIGHT" />
+                </VBox>
+
+                <!-- 课程学生管理 -->
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="课程学生管理" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <Button text="刷新课程学生" onAction="#handleRefreshCourseStudents" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                    </HBox>
+                    <TableView fx:id="courseStudentsTable" prefHeight="200">
+                        <columns>
+                            <TableColumn fx:id="colCourseStudentId" text="学号" prefWidth="80" />
+                            <TableColumn fx:id="colCourseStudentName" text="姓名" prefWidth="80" />
+                            <TableColumn fx:id="colCourseStudentGender" text="性别" prefWidth="60" />
+                            <TableColumn fx:id="colCourseStudentMajor" text="专业" prefWidth="120" />
+                            <TableColumn fx:id="colCourseStudentScore" text="成绩" prefWidth="60" />
+                        </columns>
+                    </TableView>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="成绩：" />
+                        <TextField fx:id="scoreField" prefWidth="80" promptText="0-100"/>
+                        <Button text="更新成绩" fx:id="updateScoreButton" onAction="#handleUpdateScore" />
+                        <Button text="移除学生" fx:id="removeStudentButton" onAction="#handleRemoveStudent" />
+                    </HBox>
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+</AnchorPane>

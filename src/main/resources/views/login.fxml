@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.school.studentms.controller.LoginController"
+            style="-fx-background-color: #f0f0f0;">
+
+    <center>
+        <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+            <Label text="学生管理系统" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+
+            <TextField fx:id="usernameField" promptText="请输入用户名" prefWidth="300"/>
+
+            <PasswordField fx:id="passwordField" promptText="请输入密码" prefWidth="300"/>
+
+            <Button text="登录" onAction="#handleLogin" prefWidth="300" style="-fx-font-size: 16px;"/>
+        </VBox>
+    </center>
+
+</BorderPane>

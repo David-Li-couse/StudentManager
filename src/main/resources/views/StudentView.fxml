@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane fx:id="studentView" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.school.studentms.controller.StudentController">
+
+    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"
+          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="学生信息管理" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <Button text="专业班级管理" onAction="#handleMajorClassManagement" style="-fx-font-size: 14px;"/>
+            <Button text="课程管理" onAction="#handleCourseManagement" style="-fx-font-size: 14px;"/>
+        </HBox>
+        <Separator />
+
+        <HBox spacing="10" VBox.vgrow="ALWAYS">
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="学生列表" />
+                <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+                    <TextField fx:id="searchField" promptText="按学号、姓名、专业或班级搜索..." onKeyReleased="#handleSearch" prefWidth="200"/>
+                    <Button text="搜索" onAction="#handleSearch"/>
+                    <Button text="清空" onAction="#clearSearch"/>
+                    <Button text="刷新" onAction="#handleRefresh" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                </HBox>
+                <TableView fx:id="studentTable" VBox.vgrow="ALWAYS" prefHeight="400.0">
+                    <columns>
+                        <TableColumn fx:id="colId" text="ID" prefWidth="50" />
+                        <TableColumn fx:id="colStudentId" text="学号" prefWidth="100" />
+                        <TableColumn fx:id="colName" text="姓名" prefWidth="100" />
+                        <TableColumn fx:id="colGender" text="性别" prefWidth="80" />
+                        <TableColumn fx:id="colMajor" text="专业" prefWidth="150" />
+                        <TableColumn fx:id="colClass" text="班级" prefWidth="100" />
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <VBox spacing="5" prefWidth="300">
+                <Label text="学生信息" />
+                <GridPane hgap="5" vgap="5">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+
+                    <Label text="学号：" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <TextField fx:id="studentIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                    <Label text="姓名：" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                    <TextField fx:id="nameField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                    <Label text="联系电话：" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                    <TextField fx:id="phoneField" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                    <Label text="邮箱：" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                    <TextField fx:id="emailField" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                    <Label text="性别：" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                    <ComboBox fx:id="genderComboBox" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                    <Label text="专业：" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                    <ComboBox fx:id="majorComboBox" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                    <Label text="班级：" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                    <ComboBox fx:id="classComboBox" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+                </GridPane>
+
+                <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+                    <Button text="新增" fx:id="addButton" onAction="#handleAdd" />
+                    <Button text="修改" fx:id="updateButton" onAction="#handleUpdate" />
+                    <Button text="删除" fx:id="deleteButton" onAction="#handleDelete" />
+                </HBox>
+
+            </VBox>
+        </HBox>
+    </VBox>
+</AnchorPane>
