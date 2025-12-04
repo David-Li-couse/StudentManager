@@ -12,7 +12,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import com.school.studentms.utils.AlertUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +40,17 @@ public class StudentController {
     @FXML private Button updateButton;
     @FXML private Button deleteButton;
     @FXML private TextField searchField;
+    @FXML private Button resetButton; // 新增的按钮
+    @FXML private ImageView genderImageView; // 新增的ImageView
+    @FXML private Label genderImageLabel; // 新增的Label
+    @FXML
+    private DatePicker enrollmentDatePicker;
+
+    @FXML
+    private DatePicker birthDatePicker;
+
+    @FXML
+    private TextField addressField;
 
     private final StudentService studentService = new StudentService();
     private final MajorService majorService = new MajorService();
@@ -78,6 +92,9 @@ public class StudentController {
         genderComboBox.getItems().addAll("男", "女");
         loadMajorData();
         loadStudentData();
+
+        // 初始化性别图片为默认状态
+        updateGenderImage(null);
 
         // 专业选择监听器
         majorComboBox.getSelectionModel().selectedItemProperty().addListener(
@@ -145,6 +162,9 @@ public class StudentController {
 
             phoneField.setText(student.getPhone());
             emailField.setText(student.getEmail());
+
+            // 更新性别图片
+            updateGenderImage(student.getGender());
         } else {
             clearStudentDetails();
         }
@@ -159,6 +179,59 @@ public class StudentController {
         classComboBox.getItems().clear();
         phoneField.setText("");
         emailField.setText("");
+
+        // 重置性别图片
+        updateGenderImage(null);
+    }
+
+    @FXML
+    private void handleGenderChange() {
+        // 当性别下拉框改变时更新图片
+        String gender = genderComboBox.getValue();
+        updateGenderImage(gender);
+    }
+
+    private void updateGenderImage(String gender) {
+        try {
+            if (gender == null || gender.trim().isEmpty()) {
+                // 未选择性别或清空时
+                genderImageView.setImage(null);
+                genderImageLabel.setText("未选择学生");
+                return;
+            }
+
+            String imagePath;
+            String studentName = nameField.getText().trim(); // 获取学生姓名
+
+            if ("男".equals(gender)) {
+                imagePath = "/images/male.png";
+                if (!studentName.isEmpty()) {
+                    genderImageLabel.setText(studentName); // 显示学生姓名
+                } else {
+                    genderImageLabel.setText("男性学生");
+                }
+            } else if ("女".equals(gender)) {
+                imagePath = "/images/female.png";
+                if (!studentName.isEmpty()) {
+                    genderImageLabel.setText(studentName); // 显示学生姓名
+                } else {
+                    genderImageLabel.setText("女性学生");
+                }
+            } else {
+                genderImageView.setImage(null);
+                genderImageLabel.setText("性别未知");
+                return;
+            }
+
+            // 加载并显示图片
+            Image image = new Image(imagePath);
+            genderImageView.setImage(image);
+        } catch (Exception e) {
+            // 图片加载失败时处理
+            e.printStackTrace();
+            genderImageView.setImage(null);
+            genderImageLabel.setText("图片加载失败");
+        }
     }
 
     @FXML
@@ -179,7 +252,7 @@ public class StudentController {
     private void handleRefresh() {
         loadStudentData();
         loadMajorData(); // 重新加载专业数据，确保下拉框数据最新
-        showAlert("刷新成功", "数据已刷新！");
+        AlertUtil.showInfoAlert("刷新成功", "数据已刷新！");
     }
 
     @FXML
@@ -200,7 +273,7 @@ public class StudentController {
 
         if (studentId.isEmpty() || name.isEmpty() || gender == null ||
                 majorName == null || className == null) {
-            showAlert("输入错误", "请填写所有必填字段！");
+            AlertUtil.showErrorAlert("输入错误", "请填写所有必填字段！");
             return;
         }
 
@@ -218,9 +291,9 @@ public class StudentController {
             student.setId(newId);
             studentData.add(student);
             clearStudentDetails();
-            showAlert("成功", "学生添加成功！");
+            AlertUtil.showInfoAlert("成功", "学生添加成功！");
         } catch (Exception e) {
-            showAlert("错误", "添加学生失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "添加学生失败：" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -229,7 +302,7 @@ public class StudentController {
     private void handleUpdate() {
         Student selectedStudent = studentTable.getSelectionModel().getSelectedItem();
         if (selectedStudent == null) {
-            showAlert("选择错误", "请先选择一个学生进行修改！");
+            AlertUtil.showErrorAlert("选择错误", "请先选择一个学生进行修改！");
             return;
         }
 
@@ -243,7 +316,7 @@ public class StudentController {
 
         if (studentId.isEmpty() || name.isEmpty() || gender == null ||
                 majorName == null || className == null) {
-            showAlert("输入错误", "请填写所有必填字段！");
+            AlertUtil.showErrorAlert("输入错误", "请填写所有必填字段！");
             return;
         }
 
@@ -258,39 +331,44 @@ public class StudentController {
 
             studentService.updateStudent(selectedStudent);
             studentTable.refresh();
-            showAlert("成功", "学生信息更新成功！");
+            AlertUtil.showInfoAlert("成功", "学生信息更新成功！");
         } catch (Exception e) {
-            showAlert("错误", "更新学生失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "更新学生失败：" + e.getMessage());
             e.printStackTrace();
         }
     }
 
     @FXML
+
     private void handleDelete() {
         Student selectedStudent = studentTable.getSelectionModel().getSelectedItem();
         if (selectedStudent == null) {
-            showAlert("选择错误", "请先选择一个学生进行删除！");
+            AlertUtil.showErrorAlert("选择错误", "请先选择一个学生进行删除！");
             return;
         }
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("确认删除");
-        alert.setHeaderText("你确定要删除这个学生吗？");
-        alert.setContentText("学生姓名: " + selectedStudent.getName());
+        // 使用AlertUtil的确认对话框
+        boolean confirmed = AlertUtil.showConfirmDialog(
+                "确认删除",
+                "你确定要删除这个学生吗？\n学生姓名: " + selectedStudent.getName()
+        );
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    studentService.deleteStudent(selectedStudent.getId());
-                    studentData.remove(selectedStudent);
-                    clearStudentDetails();
-                    showAlert("成功", "学生删除成功！");
-                } catch (Exception e) {
-                    showAlert("错误", "删除学生失败：" + e.getMessage());
-                    e.printStackTrace();
-                }
+        if (confirmed) {
+            try {
+                studentService.deleteStudent(selectedStudent.getId());
+                studentData.remove(selectedStudent);
+                clearStudentDetails();
+                AlertUtil.showInfoAlert("成功", "学生删除成功！");
+            } catch (Exception e) {
+                AlertUtil.showErrorAlert("错误", "删除学生失败：" + e.getMessage());
+                e.printStackTrace();
             }
-        });
+        }
+    }
+
+    @FXML
+    private void handleResetForm() {
+        clearStudentDetails();
     }
 
     private void showAlert(String title, String message) {

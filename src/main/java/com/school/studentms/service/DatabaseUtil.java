@@ -13,23 +13,32 @@ public class DatabaseUtil {
     private static String username;
     private static String password;
 
+    // 静态代码块加载驱动和配置
     static {
-        try (InputStream input = DatabaseUtil.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
-            Properties prop = new Properties();
-            if (input == null) {
-                throw new RuntimeException("无法找到配置文件 '" + PROPERTIES_FILE + "'");
+        try {
+            // 1. 加载 MySQL 驱动
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("MySQL JDBC Driver loaded successfully.");
+
+            // 2. 加载配置文件
+            try (InputStream input = DatabaseUtil.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
+                Properties prop = new Properties();
+                if (input == null) {
+                    throw new RuntimeException("无法找到配置文件 '" + PROPERTIES_FILE + "'");
+                }
+                prop.load(input);
+                url = prop.getProperty("db.url");
+                username = prop.getProperty("db.username");
+                password = prop.getProperty("db.password");
             }
-            prop.load(input);
-            url = prop.getProperty("db.url");
-            username = prop.getProperty("db.username");
-            password = prop.getProperty("db.password");
-        } catch (IOException ex) {
+        } catch (ClassNotFoundException | IOException ex) {
             ex.printStackTrace();
-            throw new ExceptionInInitializerError("加载数据库配置失败: " + ex.getMessage());
+            throw new ExceptionInInitializerError("初始化数据库连接失败: " + ex.getMessage());
         }
     }
 
     public static Connection getConnection() throws SQLException {
+        System.out.println("Connecting to: " + url);
         return DriverManager.getConnection(url, username, password);
     }
 }

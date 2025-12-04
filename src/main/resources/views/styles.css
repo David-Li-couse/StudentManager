@@ -1,0 +1,200 @@
+
+.login-button {
+    -fx-background-color: #DDA0EE;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 25px;
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.4), 20, 0.5, 0, 5);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.login-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+
+.student-majorclass-button{
+    -fx-background-color: #E6D6FF;
+    -fx-text-fill: black;
+    -fx-font-size: 18px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(181, 107, 206, 0.4), 15, 0.5, 0, 5);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.student-majorclass-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+.student-course-button{
+    -fx-background-color: #AFEEEE ;
+    -fx-text-fill: black;
+    -fx-font-size: 18px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(42, 162, 149, 0.4), 15, 0.5, 0, 5);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.student-course-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+.student-search-button{
+    -fx-background-color: #9EDCF1;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(66, 188,228, 0.4), 10, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.student-search-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+.student-clear-button{
+    -fx-background-color: #F3E3A3 ;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(233, 203,84, 0.4), 10, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.student-clear-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+.refresh-button{
+    -fx-background-color:#C8F293 ;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(108, 175, 21, 0.4), 10, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.refresh-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+.add-button{
+    -fx-background-color:#A8EBF9 ;
+    -fx-text-fill: black;
+    -fx-font-size: 16px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(54, 207, 240, 0.4), 10, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.add-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+
+.update-button{
+    -fx-background-color:#F1B26F ;
+    -fx-text-fill: black;
+    -fx-font-size: 16px;
+    -fx-padding: 8 20;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(235, 150, 59, 0.4), 10, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.update-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+.delete-button{
+    -fx-background-color:#F28B81 ;
+    -fx-text-fill: black;
+    -fx-font-size: 16px;
+    -fx-padding: 8 20;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(210, 40, 12, 0.4), 10, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.delete-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+.reset-button{
+    -fx-background-color:#CCB998 ;
+    -fx-text-fill: black;
+    -fx-font-size: 16px;
+    -fx-padding: 8 20;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(172, 141, 86, 0.4), 10, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.reset-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+.back-button{
+    -fx-background-color:#F5CD9D;
+    -fx-text-fill: black;
+    -fx-font-size: 18px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(231,133,27, 0.4), 15, 0.5, 0, 5);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.back-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+
+.assign-button{
+    -fx-background-color:#C381ED ;
+    -fx-text-fill: black;
+    -fx-font-size: 16px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(135, 29,203, 0.4), 10, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* 鼠标悬停效果 */
+.assign-button:hover {
+    -fx-background-color: #CC88EE;
+    -fx-effect: dropshadow(three-pass-box, rgba(221, 160, 238, 0.6), 25, 0.6, 0, 7);
+}
+

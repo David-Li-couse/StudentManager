@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import com.school.studentms.utils.AlertUtil;
 
 import java.util.List;
 
@@ -106,13 +107,13 @@ public class MajorClassController {
     private void handleRefreshMajors() {
         loadMajorData();
         loadMajorComboData(); // 刷新专业下拉框
-        showAlert("刷新成功", "专业数据已刷新！");
+        AlertUtil.showInfoAlert("刷新成功", "专业数据已刷新！");
     }
 
     @FXML
     private void handleRefreshClasses() {
         loadClassData();
-        showAlert("刷新成功", "班级数据已刷新！");
+        AlertUtil.showInfoAlert("刷新成功", "班级数据已刷新！");
     }
 
     private void showMajorDetails(Major major) {
@@ -150,17 +151,17 @@ public class MajorClassController {
         String majorName = majorNameField.getText().trim();
 
         if (majorCode.isEmpty() || majorName.isEmpty()) {
-            showAlert("输入错误", "请填写所有专业字段！");
+            AlertUtil.showErrorAlert("输入错误", "请填写所有专业字段！");
             return;
         }
 
         if (majorService.isMajorCodeExists(majorCode)) {
-            showAlert("输入错误", "专业代码已存在！");
+            AlertUtil.showErrorAlert("输入错误", "专业代码已存在！");
             return;
         }
 
         if (majorService.isMajorNameExists(majorName)) {
-            showAlert("输入错误", "专业名称已存在！");
+            AlertUtil.showErrorAlert("输入错误", "专业名称已存在！");
             return;
         }
 
@@ -171,10 +172,10 @@ public class MajorClassController {
                 majorData.add(major);
                 loadMajorComboData(); // 刷新专业下拉框
                 clearMajorDetails();
-                showAlert("成功", "专业添加成功！");
+                AlertUtil.showInfoAlert("成功", "专业添加成功！");
             }
         } catch (Exception e) {
-            showAlert("错误", "添加专业失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "添加专业失败：" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -183,7 +184,7 @@ public class MajorClassController {
     private void handleUpdateMajor() {
         Major selectedMajor = majorTable.getSelectionModel().getSelectedItem();
         if (selectedMajor == null) {
-            showAlert("选择错误", "请先选择一个专业进行修改！");
+            AlertUtil.showErrorAlert("选择错误", "请先选择一个专业进行修改！");
             return;
         }
 
@@ -191,14 +192,14 @@ public class MajorClassController {
         String majorName = majorNameField.getText().trim();
 
         if (majorCode.isEmpty() || majorName.isEmpty()) {
-            showAlert("输入错误", "请填写所有专业字段！");
+            AlertUtil.showErrorAlert("输入错误", "请填写所有专业字段！");
             return;
         }
 
         // 检查名称是否与其他专业重复
         if (!selectedMajor.getMajorName().equals(majorName) &&
                 majorService.isMajorNameExists(majorName)) {
-            showAlert("输入错误", "专业名称已存在！");
+            AlertUtil.showErrorAlert("输入错误", "专业名称已存在！");
             return;
         }
 
@@ -209,10 +210,10 @@ public class MajorClassController {
             if (success) {
                 majorTable.refresh();
                 loadMajorComboData(); // 刷新专业下拉框
-                showAlert("成功", "专业信息更新成功！");
+                AlertUtil.showInfoAlert("成功", "专业信息更新成功！");
             }
         } catch (Exception e) {
-            showAlert("错误", "更新专业失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "更新专业失败：" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -221,7 +222,7 @@ public class MajorClassController {
     private void handleDeleteMajor() {
         Major selectedMajor = majorTable.getSelectionModel().getSelectedItem();
         if (selectedMajor == null) {
-            showAlert("选择错误", "请先选择一个专业进行删除！");
+            AlertUtil.showErrorAlert("选择错误", "请先选择一个专业进行删除！");
             return;
         }
 
@@ -255,12 +256,12 @@ public class MajorClassController {
         String majorCode = classMajorComboBox.getValue();
 
         if (className.isEmpty() || majorCode == null) {
-            showAlert("输入错误", "请填写所有班级字段！");
+            AlertUtil.showErrorAlert("输入错误", "请填写所有班级字段！");
             return;
         }
 
         if (classService.isClassNameExists(className)) {
-            showAlert("输入错误", "班级名称已存在！");
+            AlertUtil.showErrorAlert("输入错误", "班级名称已存在！");
             return;
         }
 
@@ -273,10 +274,10 @@ public class MajorClassController {
                 // 重新加载获取包含ID的班级数据
                 loadClassData();
                 clearClassDetails();
-                showAlert("成功", "班级添加成功！");
+                AlertUtil.showInfoAlert("成功", "班级添加成功！");
             }
         } catch (Exception e) {
-            showAlert("错误", "添加班级失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "添加班级失败：" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -285,7 +286,7 @@ public class MajorClassController {
     private void handleUpdateClass() {
         Clazz selectedClass = classTable.getSelectionModel().getSelectedItem();
         if (selectedClass == null) {
-            showAlert("选择错误", "请先选择一个班级进行修改！");
+            AlertUtil.showErrorAlert("选择错误", "请先选择一个班级进行修改！");
             return;
         }
 
@@ -293,14 +294,14 @@ public class MajorClassController {
         String majorCode = classMajorComboBox.getValue();
 
         if (className.isEmpty() || majorCode == null) {
-            showAlert("输入错误", "请填写所有班级字段！");
+            AlertUtil.showErrorAlert("输入错误", "请填写所有班级字段！");
             return;
         }
 
         // 检查名称是否与其他班级重复
         if (!selectedClass.getClassName().equals(className) &&
                 classService.isClassNameExists(className)) {
-            showAlert("输入错误", "班级名称已存在！");
+            AlertUtil.showErrorAlert("输入错误", "班级名称已存在！");
             return;
         }
 
@@ -310,10 +311,10 @@ public class MajorClassController {
             boolean success = classService.updateClass(selectedClass);
             if (success) {
                 classTable.refresh();
-                showAlert("成功", "班级信息更新成功！");
+                AlertUtil.showInfoAlert("成功", "班级信息更新成功！");
             }
         } catch (Exception e) {
-            showAlert("错误", "更新班级失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "更新班级失败：" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -322,30 +323,31 @@ public class MajorClassController {
     private void handleDeleteClass() {
         Clazz selectedClass = classTable.getSelectionModel().getSelectedItem();
         if (selectedClass == null) {
-            showAlert("选择错误", "请先选择一个班级进行删除！");
+            AlertUtil.showErrorAlert("选择错误", "请先选择一个班级进行删除！");
             return;
         }
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("确认删除");
-        alert.setHeaderText("你确定要删除这个班级吗？");
-        alert.setContentText("班级名称: " + selectedClass.getClassName());
+        // 使用AlertUtil的确认对话框
+        boolean confirmed = AlertUtil.showConfirmDialog(
+                "确认删除",
+                "你确定要删除这个班级吗？\n班级名称: " + selectedClass.getClassName()
+        );
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    boolean success = classService.deleteClass(selectedClass.getClassCode());
-                    if (success) {
-                        classData.remove(selectedClass);
-                        clearClassDetails();
-                        showAlert("成功", "班级删除成功！");
-                    }
-                } catch (Exception e) {
-                    showAlert("错误", "删除班级失败：" + e.getMessage());
-                    e.printStackTrace();
+        if (confirmed) {
+            try {
+                boolean success = classService.deleteClass(selectedClass.getClassCode());
+                if (success) {
+                    classData.remove(selectedClass);
+                    clearClassDetails();
+                    AlertUtil.showInfoAlert("成功", "班级删除成功！");
+                } else {
+                    AlertUtil.showErrorAlert("错误", "班级删除失败！");
                 }
+            } catch (Exception e) {
+                AlertUtil.showErrorAlert("错误", "删除班级失败：" + e.getMessage());
+                e.printStackTrace();
             }
-        });
+        }
     }
 
     private void showAlert(String title, String message) {

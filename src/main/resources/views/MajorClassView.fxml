@@ -4,86 +4,126 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane fx:id="majorClassView" xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.school.studentms.controller.MajorClassController">
 
-    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"
-          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+    <!-- 背景图片层（自适应全屏） -->
+    <Pane style="-fx-background-image: url('/images/MajorClass-bg.png');
+                 -fx-background-size: cover;
+                 -fx-background-position: center;
+                 -fx-background-repeat: no-repeat;"
+          AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0"/>
+
+
+    <!-- 主要内容容器（居中显示，有最大宽度限制） -->
+    <VBox spacing="15" alignment="TOP_CENTER"
+          AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20"
+          maxWidth="1200">
 
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label text="专业班级管理" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-            <Button text="返回学生管理" onAction="#handleBackToStudent" style="-fx-font-size: 14px;"/>
+            <Label text="专业班级管理"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
+            <Button text="返回学生管理" onAction="#handleBackToStudent" stylesheets="@styles.css"
+                    styleClass="back-button"/>
         </HBox>
-        <Separator />
+        <Separator style="-fx-background-color: #cccccc;" />
 
-        <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <HBox spacing="30" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
             <!-- 专业管理部分 -->
-            <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <VBox spacing="15" HBox.hgrow="ALWAYS" maxWidth="550"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.9);
+                         -fx-background-radius: 8;
+                         -fx-border-radius: 8;
+                         -fx-border-color: #dddddd;
+                         -fx-border-width: 1;
+                         -fx-padding: 15;">
                 <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label text="专业管理" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                    <Button text="刷新专业" onAction="#handleRefreshMajors" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                    <Label text="专业管理"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
+                    <Button text="刷新专业" onAction="#handleRefreshMajors" stylesheets="@styles.css"
+                            styleClass="refresh-button"/>
                 </HBox>
 
-                <TableView fx:id="majorTable" prefHeight="200">
+                <TableView fx:id="majorTable" prefHeight="250">
                     <columns>
-                        <TableColumn fx:id="colMajorCode" text="专业代码" prefWidth="100" />
-                        <TableColumn fx:id="colMajorName" text="专业名称" prefWidth="200" />
+                        <TableColumn fx:id="colMajorCode" text="专业代码" prefWidth="120" />
+                        <TableColumn fx:id="colMajorName" text="专业名称" prefWidth="250" />
                     </columns>
                 </TableView>
 
-                <GridPane hgap="5" vgap="5">
+                <GridPane hgap="10" vgap="10">
                     <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" prefWidth="80" />
                         <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
 
-                    <Label text="专业代码：" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <Label text="专业代码：" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                           style="-fx-text-fill: #333333;" />
                     <TextField fx:id="majorCodeField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
 
-                    <Label text="专业名称：" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                    <Label text="专业名称：" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                           style="-fx-text-fill: #333333;" />
                     <TextField fx:id="majorNameField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
                 </GridPane>
 
-                <HBox spacing="10" alignment="CENTER_RIGHT">
-                    <Button text="新增专业" fx:id="addMajorButton" onAction="#handleAddMajor" />
-                    <Button text="修改专业" fx:id="updateMajorButton" onAction="#handleUpdateMajor" />
-                    <Button text="删除专业" fx:id="deleteMajorButton" onAction="#handleDeleteMajor" />
+                <HBox spacing="15" alignment="CENTER_RIGHT">
+                    <Button text="新增专业" fx:id="addMajorButton" onAction="#handleAddMajor" stylesheets="@styles.css"
+                            styleClass="add-button" />
+                    <Button text="修改专业" fx:id="updateMajorButton" onAction="#handleUpdateMajor" stylesheets="@styles.css"
+                            styleClass="update-button"/>
+                    <Button text="删除专业" fx:id="deleteMajorButton" onAction="#handleDeleteMajor" stylesheets="@styles.css"
+                            styleClass="delete-button" />
                 </HBox>
             </VBox>
 
             <!-- 班级管理部分 -->
-            <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <VBox spacing="15" HBox.hgrow="ALWAYS" maxWidth="550"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.9);
+                         -fx-background-radius: 8;
+                         -fx-border-radius: 8;
+                         -fx-border-color: #dddddd;
+                         -fx-border-width: 1;
+                         -fx-padding: 15;">
                 <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label text="班级管理" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                    <Button text="刷新班级" onAction="#handleRefreshClasses" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                    <Label text="班级管理"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
+                    <Button text="刷新班级" onAction="#handleRefreshClasses" stylesheets="@styles.css"
+                            styleClass="refresh-button"/>
                 </HBox>
 
-                <TableView fx:id="classTable" prefHeight="200">
+                <TableView fx:id="classTable" prefHeight="250">
                     <columns>
-                        <TableColumn fx:id="colClassCode" text="班级代码" prefWidth="80" />
-                        <TableColumn fx:id="colClassName" text="班级名称" prefWidth="150" />
-                        <TableColumn fx:id="colClassMajor" text="所属专业" prefWidth="150" />
+                        <TableColumn fx:id="colClassCode" text="班级代码" prefWidth="100" />
+                        <TableColumn fx:id="colClassName" text="班级名称" prefWidth="180" />
+                        <TableColumn fx:id="colClassMajor" text="所属专业" prefWidth="180" />
                     </columns>
                 </TableView>
 
-                <GridPane hgap="5" vgap="5">
+                <GridPane hgap="10" vgap="10">
                     <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" prefWidth="80" />
                         <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
 
-                    <Label text="班级名称：" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <Label text="班级名称：" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                           style="-fx-text-fill: #333333;" />
                     <TextField fx:id="classNameField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
 
-                    <Label text="所属专业：" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                    <Label text="所属专业：" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                           style="-fx-text-fill: #333333;" />
                     <ComboBox fx:id="classMajorComboBox" GridPane.rowIndex="1" GridPane.columnIndex="1" />
                 </GridPane>
 
-                <HBox spacing="10" alignment="CENTER_RIGHT">
-                    <Button text="新增班级" fx:id="addClassButton" onAction="#handleAddClass" />
-                    <Button text="修改班级" fx:id="updateClassButton" onAction="#handleUpdateClass" />
-                    <Button text="删除班级" fx:id="deleteClassButton" onAction="#handleDeleteClass" />
+                <HBox spacing="15" alignment="CENTER_RIGHT">
+                    <Button text="新增班级" fx:id="addClassButton" onAction="#handleAddClass" stylesheets="@styles.css"
+                            styleClass="add-button" />
+                    <Button text="修改班级" fx:id="updateClassButton" onAction="#handleUpdateClass" stylesheets="@styles.css"
+                            styleClass="update-button"/>
+                    <Button text="删除班级" fx:id="deleteClassButton" onAction="#handleDeleteClass" stylesheets="@styles.css"
+                            styleClass="delete-button" />
                 </HBox>
             </VBox>
         </HBox>

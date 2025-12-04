@@ -3,78 +3,197 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane fx:id="studentView" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.school.studentms.controller.StudentController">
 
-    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"
-          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+    <!-- 背景图片层（自适应全屏） -->
+    <Pane style="-fx-background-image: url('/images/Student-bg.png');
+                 -fx-background-size: cover;
+                 -fx-background-position: center;
+                 -fx-background-repeat: no-repeat;"
+          AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0"/>
 
+    <!-- 主内容容器（自适应全屏） -->
+    <VBox spacing="15" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
+
+        <!-- 标题栏 -->
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label text="学生信息管理" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-            <Button text="专业班级管理" onAction="#handleMajorClassManagement" style="-fx-font-size: 14px;"/>
-            <Button text="课程管理" onAction="#handleCourseManagement" style="-fx-font-size: 14px;"/>
+            <Label text="学生信息管理"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
+            <HBox spacing="10">
+                <Button text="专业班级管理" onAction="#handleMajorClassManagement" stylesheets="@styles.css"
+                        styleClass="student-majorclass-button"/>
+                <Button text="课程管理" onAction="#handleCourseManagement" stylesheets="@styles.css"
+                        styleClass="student-course-button"/>
+            </HBox>
         </HBox>
-        <Separator />
+        <Separator style="-fx-background-color: #cccccc;" />
 
-        <HBox spacing="10" VBox.vgrow="ALWAYS">
-            <VBox HBox.hgrow="ALWAYS">
-                <Label text="学生列表" />
-                <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
-                    <TextField fx:id="searchField" promptText="按学号、姓名、专业或班级搜索..." onKeyReleased="#handleSearch" prefWidth="200"/>
-                    <Button text="搜索" onAction="#handleSearch"/>
-                    <Button text="清空" onAction="#clearSearch"/>
-                    <Button text="刷新" onAction="#handleRefresh" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+        <!-- 主要内容区域 -->
+        <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+            <!-- 学生列表卡片（自适应宽度） -->
+            <VBox spacing="10" HBox.hgrow="ALWAYS" maxWidth="900"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.95);
+                         -fx-background-radius: 8;
+                         -fx-border-radius: 8;
+                         -fx-border-color: #dddddd;
+                         -fx-border-width: 1;
+                         -fx-padding: 15;">
+                <Label text="学生列表"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+
+                <!-- 搜索栏 -->
+                <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10 0;">
+                    <TextField fx:id="searchField" promptText="按学号、姓名、专业或班级搜索..."
+                               onKeyReleased="#handleSearch"
+                               HBox.hgrow="ALWAYS"
+                               style="-fx-background-radius: 4;"/>
+                    <Button text="搜索" onAction="#handleSearch" stylesheets="@styles.css"
+                            styleClass="student-search-button"/>
+                    <Button text="清空" onAction="#clearSearch" stylesheets="@styles.css"
+                            styleClass="student-clear-button"/>
+                    <Button text="刷新" onAction="#handleRefresh" stylesheets="@styles.css"
+                            styleClass="refresh-button"/>
                 </HBox>
-                <TableView fx:id="studentTable" VBox.vgrow="ALWAYS" prefHeight="400.0">
+
+                <!-- 学生表格（自适应高度） -->
+                <TableView fx:id="studentTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colId" text="ID" prefWidth="50" />
-                        <TableColumn fx:id="colStudentId" text="学号" prefWidth="100" />
-                        <TableColumn fx:id="colName" text="姓名" prefWidth="100" />
-                        <TableColumn fx:id="colGender" text="性别" prefWidth="80" />
-                        <TableColumn fx:id="colMajor" text="专业" prefWidth="150" />
-                        <TableColumn fx:id="colClass" text="班级" prefWidth="100" />
+                        <TableColumn fx:id="colId" text="ID" prefWidth="50" minWidth="40" maxWidth="80"/>
+                        <TableColumn fx:id="colStudentId" text="学号" prefWidth="120" minWidth="100" maxWidth="150"/>
+                        <TableColumn fx:id="colName" text="姓名" prefWidth="100" minWidth="80" maxWidth="120"/>
+                        <TableColumn fx:id="colGender" text="性别" prefWidth="70" minWidth="60" maxWidth="80"/>
+                        <TableColumn fx:id="colMajor" text="专业" prefWidth="180" minWidth="150" maxWidth="250"/>
+                        <TableColumn fx:id="colClass" text="班级" prefWidth="100" minWidth="80" maxWidth="120"/>
                     </columns>
                 </TableView>
             </VBox>
 
-            <VBox spacing="5" prefWidth="300">
-                <Label text="学生信息" />
-                <GridPane hgap="5" vgap="5">
-                    <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
-                        <ColumnConstraints hgrow="ALWAYS" />
-                    </columnConstraints>
+            <!-- 学生信息表单卡片 -->
+            <VBox spacing="10" prefWidth="600" minWidth="550" maxWidth="650"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.95);
+             -fx-background-radius: 8;
+             -fx-border-radius: 8;
+             -fx-border-color: #dddddd;
+             -fx-border-width: 1;
+             -fx-padding: 15;">
 
-                    <Label text="学号：" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                    <TextField fx:id="studentIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                <Label text="学生详细信息"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-padding: 0 0 10 0;"/>
 
-                    <Label text="姓名：" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-                    <TextField fx:id="nameField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                <!-- 图片和表单的布局 -->
+                <HBox spacing="20" VBox.vgrow="ALWAYS">
 
-                    <Label text="联系电话：" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                    <TextField fx:id="phoneField" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                    <!-- 性别图片区域 -->
+                    <VBox spacing="10" alignment="TOP_CENTER" prefWidth="200" minWidth="180" maxWidth="220">
+                        <Label text="学生照片" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #555555; -fx-padding: 0 0 5 0;"/>
 
-                    <Label text="邮箱：" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-                    <TextField fx:id="emailField" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                        <!-- 图片容器 -->
+                        <StackPane style="-fx-background-color: white;
+                            -fx-background-radius: 8;
+                            -fx-border-radius: 8;
+                            -fx-border-color: #cccccc;
+                            -fx-border-width: 1;
+                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.5, 0, 2);
+                            -fx-padding: 5;"
+                                   maxWidth="200" maxHeight="280"
+                                   alignment="CENTER">
 
-                    <Label text="性别：" GridPane.rowIndex="4" GridPane.columnIndex="0" />
-                    <ComboBox fx:id="genderComboBox" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                            <!-- 性别图片 -->
+                            <ImageView fx:id="genderImageView"
+                                       fitWidth="190"
+                                       fitHeight="265"
+                                       preserveRatio="true"
+                                       smooth="true"
+                                       pickOnBounds="true"
+                                       style="-fx-background-color: transparent;" />
+                        </StackPane>
 
-                    <Label text="专业：" GridPane.rowIndex="5" GridPane.columnIndex="0" />
-                    <ComboBox fx:id="majorComboBox" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+                        <!-- 图片说明 -->
+                        <Label fx:id="genderImageLabel" text="未选择学生"
+                               style="-fx-font-size: 12px; -fx-text-fill: #666666; -fx-font-style: italic; -fx-padding: 5 0 0 0;"/>
+                    </VBox>
 
-                    <Label text="班级：" GridPane.rowIndex="6" GridPane.columnIndex="0" />
-                    <ComboBox fx:id="classComboBox" GridPane.rowIndex="6" GridPane.columnIndex="1" />
-                </GridPane>
+                    <!-- 表单区域 -->
+                    <VBox spacing="5" HBox.hgrow="ALWAYS" minWidth="300">
+                        <!-- 基本信息标题 -->
+                        <Label text="基本信息"
+                               style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-padding: 0 0 8 0;"/>
 
-                <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
-                    <Button text="新增" fx:id="addButton" onAction="#handleAdd" />
-                    <Button text="修改" fx:id="updateButton" onAction="#handleUpdate" />
-                    <Button text="删除" fx:id="deleteButton" onAction="#handleDelete" />
+                        <!-- 表单区域（可滚动） -->
+                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                            <GridPane hgap="12" vgap="12" style="-fx-padding: 10 0 15 0;">
+                                <columnConstraints>
+                                    <ColumnConstraints halignment="LEFT" hgrow="NEVER" prefWidth="100" />
+                                    <ColumnConstraints hgrow="ALWAYS" />
+                                </columnConstraints>
+
+                                <!-- 第1行：学号 -->
+                                <Label text="学号：" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                                       style="-fx-text-fill: #333333; -fx-font-size: 13px;-fx-padding: 0 0 0 10px;"/>
+                                <TextField fx:id="studentIdField" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                           style="-fx-background-radius: 4; -fx-padding: 6 8;"/>
+
+                                <!-- 第2行：姓名 -->
+                                <Label text="姓名：" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                                       style="-fx-text-fill: #333333; -fx-font-size: 13px;-fx-padding: 0 0 0 10px;"/>
+                                <TextField fx:id="nameField" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                           style="-fx-background-radius: 4; -fx-padding: 6 8;"/>
+
+                                <!-- 第3行：性别 -->
+                                <Label text="性别：" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                                       style="-fx-text-fill: #333333; -fx-font-size: 13px;-fx-padding: 0 0 0 10px;"/>
+                                <ComboBox fx:id="genderComboBox" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                          style="-fx-background-radius: 4; -fx-padding: 5 8;"
+                                          onAction="#handleGenderChange"/>
+
+                                <!-- 第4行：联系电话 -->
+                                <Label text="联系电话：" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                                       style="-fx-text-fill: #333333; -fx-font-size: 13px;-fx-padding: 0 0 0 10px;"/>
+                                <TextField fx:id="phoneField" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                                           style="-fx-background-radius: 4; -fx-padding: 6 8;"/>
+
+                                <!-- 第5行：邮箱 -->
+                                <Label text="邮箱：" GridPane.rowIndex="4" GridPane.columnIndex="0"
+                                       style="-fx-text-fill: #333333; -fx-font-size: 13px;-fx-padding: 0 0 0 10px;"/>
+                                <TextField fx:id="emailField" GridPane.rowIndex="4" GridPane.columnIndex="1"
+                                           style="-fx-background-radius: 4; -fx-padding: 6 8;"/>
+
+                                <!-- 第6行：专业 -->
+                                <Label text="专业：" GridPane.rowIndex="5" GridPane.columnIndex="0"
+                                       style="-fx-text-fill: #333333; -fx-font-size: 13px;-fx-padding: 0 0 0 10px;"/>
+                                <ComboBox fx:id="majorComboBox" GridPane.rowIndex="5" GridPane.columnIndex="1"
+                                          style="-fx-background-radius: 4; -fx-padding: 5 8;"/>
+
+                                <!-- 第7行：班级 -->
+                                <Label text="班级：" GridPane.rowIndex="6" GridPane.columnIndex="0"
+                                       style="-fx-text-fill: #333333; -fx-font-size: 13px;-fx-padding: 0 0 0 10px;"/>
+                                <ComboBox fx:id="classComboBox" GridPane.rowIndex="6" GridPane.columnIndex="1"
+                                          style="-fx-background-radius: 4; -fx-padding: 5 8;"/>
+
+
+                            </GridPane>
+                        </ScrollPane>
+                    </VBox>
                 </HBox>
 
+                <!-- 操作按钮 -->
+                <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 15 0 0 0;">
+                    <Button text="新增学生" fx:id="addButton" onAction="#handleAdd" stylesheets="@styles.css"
+                            styleClass="add-button"/>
+                    <Button text="修改信息" fx:id="updateButton" onAction="#handleUpdate" stylesheets="@styles.css"
+                            styleClass="update-button"/>
+                    <Button text="删除学生" fx:id="deleteButton" onAction="#handleDelete" stylesheets="@styles.css"
+                            styleClass="delete-button" />
+                    <Button text="重置表单" fx:id="resetButton" onAction="#handleResetForm" stylesheets="@styles.css"
+                            styleClass="reset-button"/>
+                </HBox>
             </VBox>
         </HBox>
     </VBox>

@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane fx:id="rootPane" prefWidth="800" prefHeight="600"
+            style="-fx-background-image: url('/images/login-bg.png');
+                   -fx-background-size: cover;
+                   -fx-background-position: center;
+                   -fx-background-repeat: no-repeat;"
+            xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.school.studentms.controller.LoginController"
-            style="-fx-background-color: #f0f0f0;">
+            fx:controller="com.school.studentms.controller.LoginController">
 
-    <center>
-        <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
-            <Label text="学生管理系统" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+    <!-- 登录表单内容 -->
+    <VBox alignment="CENTER" spacing="5"
+          prefWidth="800" prefHeight="600">
+        <Label text="学生管理系统"
+               style="-fx-text-fill: black; -fx-font-size: 32; -fx-font-weight: bold; -fx-padding: 0 0 0 150;"/>
 
-            <TextField fx:id="usernameField" promptText="请输入用户名" prefWidth="300"/>
+        <AnchorPane prefHeight="30" prefWidth="550">
+            <!-- 空容器，仅用于占位 -->
+        </AnchorPane>
 
-            <PasswordField fx:id="passwordField" promptText="请输入密码" prefWidth="300"/>
+        <AnchorPane prefWidth="550">
+            <TextField fx:id="usernameField" promptText="用户名"
+                       prefWidth="300" prefHeight="35"
+                       AnchorPane.rightAnchor="175"/>
+        </AnchorPane>
 
-            <Button text="登录" onAction="#handleLogin" prefWidth="300" style="-fx-font-size: 16px;"/>
-        </VBox>
-    </center>
+        <AnchorPane prefHeight="20" prefWidth="550">
+            <!-- 空容器，仅用于占位 -->
+        </AnchorPane>
 
-</BorderPane>
+        <AnchorPane prefWidth="550">
+            <PasswordField fx:id="passwordField" promptText="密码"
+                           prefWidth="300" prefHeight="35"
+                           AnchorPane.rightAnchor="175"/>
+        </AnchorPane>
+
+        <AnchorPane prefHeight="35" prefWidth="550">
+            <!-- 空容器，仅用于占位 -->
+        </AnchorPane>
+
+        <AnchorPane prefWidth="400" stylesheets="@styles.css">
+            <Button text="登    录" onAction="#handleLogin"
+                    prefWidth="190" prefHeight="45"
+                    styleClass="login-button"
+                    AnchorPane.rightAnchor="230">
+            </Button>
+        </AnchorPane>
+    </VBox>
+</AnchorPane>
