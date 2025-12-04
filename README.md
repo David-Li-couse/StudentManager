@@ -13,6 +13,7 @@
 
 #测试报告模板
 【日期】-【姓名】
+```
 一、建议（可增加的功能/小修改意见）：
 1、xxx
 2、
@@ -21,7 +22,7 @@
 二、报错（功能不完善/运行错误）：
 1、名称：【xxx】重现步骤：【xxx】报错信息：【xxx】
 2、
-
+```
 
 
 #github同步项目的教程https://www.bilibili.com/video/BV1o7411U7j6?t=6.1
@@ -37,7 +38,7 @@
 6、同步maven项目
 
 如果java版本不是21（如23），要额外更改pom.xml如下：
-
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -111,4 +112,4 @@
         </plugins>
     </build>
 </project>
-
+```
