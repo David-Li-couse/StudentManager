@@ -1,4 +1,4 @@
-                                        -- 创建数据库
+-- 创建数据库
 CREATE DATABASE IF NOT EXISTS student_db0 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE student_db0;
 
@@ -6,7 +6,7 @@ USE student_db0;
 CREATE TABLE IF NOT EXISTS majors (
     major_code VARCHAR(20) PRIMARY KEY,
     major_name VARCHAR(100) NOT NULL UNIQUE
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 创建班级表
 CREATE TABLE IF NOT EXISTS classes (
@@ -14,13 +14,13 @@ CREATE TABLE IF NOT EXISTS classes (
     class_name VARCHAR(100) NOT NULL UNIQUE,
     major_code VARCHAR(20) NOT NULL,
     FOREIGN KEY (major_code) REFERENCES majors(major_code) ON DELETE CASCADE
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 创建课程表
 CREATE TABLE IF NOT EXISTS courses (
     course_code VARCHAR(20) PRIMARY KEY,
     course_name VARCHAR(100) NOT NULL UNIQUE
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 创建学生表
 CREATE TABLE IF NOT EXISTS students (
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS students (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (major_name) REFERENCES majors(major_name) ON DELETE CASCADE,
     FOREIGN KEY (class_name) REFERENCES classes(class_name) ON DELETE CASCADE
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 插入初始专业数据
 INSERT IGNORE INTO majors (major_code, major_name) VALUES
@@ -57,7 +57,7 @@ INSERT IGNORE INTO classes (class_name, major_code) VALUES
 ('物理1班', 'PH'),
 ('化学1班', 'CH');
 
--- 插入初始课程数据（修复：添加分号）
+-- 插入初始课程数据
 INSERT IGNORE INTO courses (course_code, course_name) VALUES
 ('CS101', '程序设计基础'),
 ('CS102', '数据结构'),
@@ -74,7 +74,7 @@ INSERT IGNORE INTO students (student_id, name, gender, major_name, class_name, p
 ('20230007', '周九', '男', '化学', '化学1班', '13800138007', 'zhoujiu@email.com'),
 ('20230008', '吴十', '女', '计算机科学', '计算机3班', '13800138008', 'wushi@email.com');
 
--- 创建程序设计基础课程表
+-- 创建程序设计基础课程表 - 修复：确保字符集一致
 CREATE TABLE IF NOT EXISTS course_CS101 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id VARCHAR(20) NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS course_CS101 (
     major_name VARCHAR(100) NOT NULL,
     score DECIMAL(5,2) DEFAULT NULL,
     FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 为程序设计基础课程分配学生
 INSERT IGNORE INTO course_CS101 (student_id, student_name, gender, major_name) VALUES
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS course_CS102 (
     major_name VARCHAR(100) NOT NULL,
     score DECIMAL(5,2) DEFAULT NULL,
     FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 为数据结构课程分配学生
 INSERT IGNORE INTO course_CS102 (student_id, student_name, gender, major_name) VALUES
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS course_MA101 (
     major_name VARCHAR(100) NOT NULL,
     score DECIMAL(5,2) DEFAULT NULL,
     FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 为高等数学课程分配学生
 INSERT IGNORE INTO course_MA101 (student_id, student_name, gender, major_name) VALUES
