@@ -3,6 +3,7 @@ package com.school.studentms;
 import com.school.studentms.controller.LoginController;
 import com.school.studentms.controller.StudentController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -105,7 +106,7 @@ public class MainApp extends Application {
             }
 
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
-            Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+            Scene scene = new Scene(fxmlLoader.load());
 
             // 获取控制器并设置 MainApp 引用
             StudentController controller = fxmlLoader.getController();
@@ -116,8 +117,12 @@ public class MainApp extends Application {
             //UI：修改icon
             primaryStage.setTitle("学生管理系统");
             primaryStage.setScene(scene);
-            primaryStage.setMaximized(true);
+            primaryStage.setResizable(true);
             primaryStage.show();
+            Platform.runLater(() -> {
+                primaryStage.setMaximized(true);
+            });
+
         } catch (IOException e) {
             e.printStackTrace();
             showError("无法加载主界面：" + e.getMessage());
