@@ -4,9 +4,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane fx:id="majorClassView" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.school.studentms.controller.MajorClassController">
+
 
     <!-- 背景图片层（自适应全屏） -->
     <Pane style="-fx-background-image: url('/images/MajorClass-bg.png');
