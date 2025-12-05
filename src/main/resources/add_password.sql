@@ -1,0 +1,3 @@
+USE student_db0;
+ALTER TABLE students
+ADD COLUMN password VARCHAR(100) DEFAULT '123456';

@@ -1,5 +1,6 @@
 package com.school.studentms.controller;
 
+import com.school.studentms.service.LoginService;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,11 +11,14 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import com.school.studentms.MainApp;
 import com.school.studentms.utils.AlertUtil;
+import com.school.studentms.service.LoginService;
 
 public class LoginController {
 
     private MainApp mainApp;
     private boolean hasShownError = false; // 标记是否显示过错误背景
+
+    private LoginService loginservice = new LoginService();
 
     @FXML
     private TextField usernameField;
@@ -42,8 +46,11 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if ("admin".equals(username) && "123456".equals(password)) {
-            // 登录成功
+        boolean login_admin = loginservice.adminLogin(username, password);
+        boolean login_student = loginservice.studentLogin(username, password);
+
+        if (login_admin) {
+            // 管理员登录成功
             if (hasShownError) {
                 // 如果之前显示过错误背景，使用动画恢复
                 resetBackgroundWithAnimation(() -> openMainStage());
@@ -52,7 +59,18 @@ public class LoginController {
                 openMainStage();
             }
 
-        } else {
+        }
+        else if(login_student) {
+            // 学生登录成功
+            if (hasShownError) {
+                // 如果之前显示过错误背景，使用动画恢复
+                resetBackgroundWithAnimation(() -> openMainStage());
+            } else {
+                // 首次正确登录，直接打开主界面
+                openMainStage();
+            }
+        }
+        else {
             // 登录失败，使用动画切换为错误背景
             setErrorBackgroundWithAnimation();
             hasShownError = true; // 标记已显示错误背景

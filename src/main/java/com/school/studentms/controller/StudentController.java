@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import com.school.studentms.utils.AlertUtil;
+import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +44,7 @@ public class StudentController {
     @FXML private Button resetButton; // 新增的按钮
     @FXML private ImageView genderImageView; // 新增的ImageView
     @FXML private Label genderImageLabel; // 新增的Label
+    @FXML private Button logoutButton; // 退出登录按钮
     @FXML
     private DatePicker enrollmentDatePicker;
 
@@ -371,11 +373,38 @@ public class StudentController {
         clearStudentDetails();
     }
 
-    private void showAlert(String title, String message) {
+    @FXML
+    private void handleLogout() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("确认退出");
+        alert.setHeaderText("确定要退出登录吗？");
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    // 关闭当前窗口
+                    Stage stage = (Stage) studentView.getScene().getWindow();
+                    stage.close();
+
+                    // 重新显示登录窗口
+                    if (mainApp != null) {
+                        mainApp.showLoginWindow();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    AlertUtil.showErrorAlert("错误", "退出登录失败：" + e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    /*private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
+    */
 }

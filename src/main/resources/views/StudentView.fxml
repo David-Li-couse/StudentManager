@@ -31,6 +31,10 @@
                 <Button text="课程管理" onAction="#handleCourseManagement" stylesheets="@styles.css"
                         styleClass="student-course-button"/>
             </HBox>
+            <Region HBox.hgrow="ALWAYS" />
+
+            <Button fx:id="logoutButton" text="退出登录" onAction="#handleLogout" stylesheets="@styles.css"
+                    styleClass="logout-button"/>
         </HBox>
         <Separator style="-fx-background-color: #cccccc;" />
 

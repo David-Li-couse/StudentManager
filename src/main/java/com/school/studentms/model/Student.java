@@ -10,11 +10,12 @@ public class Student {
     private String phone;
     private String email;
     private Double score;
+    private String password;
 
     public Student() {}
 
     public Student(int id, String studentId, String name, String gender,
-                   String majorName, String className, String phone, String email, Double score) {
+                   String majorName, String className, String phone, String email, Double score ,String password) {
         this.id = id;
         this.studentId = studentId;
         this.name = name;
@@ -24,6 +25,7 @@ public class Student {
         this.phone = phone;
         this.email = email;
         this.score = score;
+        this.password = password;
     }
 
     // Getters and Setters
@@ -53,4 +55,7 @@ public class Student {
 
     public Double getScore() { return score; }
     public void setScore(Double score) { this.score = score; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }

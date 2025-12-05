@@ -93,6 +93,7 @@ public class MainApp extends Application {
         primaryStage.setResizable(false);
         primaryStage.centerOnScreen();
         primaryStage.show();
+
     }
 
     // 登录成功后显示主界面
