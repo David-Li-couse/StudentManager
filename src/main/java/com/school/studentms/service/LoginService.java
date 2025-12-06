@@ -1,29 +1,55 @@
 package com.school.studentms.service;
 
-import java.sql.*;
+import com.school.studentms.model.Student;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class LoginService {
 
-    public boolean adminLogin(String username, String password) {
-        return "admin".equals(username) && "123456".equals(password);
-    }
+    /**
+     * 登录方法：
+     * 返回：
+     *   "admin"   —— 管理员登录成功
+     *   "student" —— 学生登录成功
+     *   null      —— 登录失败
+     */
+    public String login(String username, String password) {
 
-    public boolean studentLogin(String username, String password) {
-        String sql = "SELECT password FROM students WHERE student_id = ?";
+        // --------------- 1. 判断管理员登录 -------------------
+        String adminSql = "SELECT * FROM admins WHERE username=? AND password=?";
         try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, username);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    String storedPassword = rs.getString("password");
-                    return storedPassword.equals(password);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("学生登录失败: " + e.getMessage());
-        }
-        return false;
-    }
+             PreparedStatement ps = conn.prepareStatement(adminSql)) {
 
+            ps.setString(1, username);
+            ps.setString(2, password);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return "admin";     // 管理员登录成功
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // --------------- 2. 判断学生登录 ---------------------
+        String studentSql = "SELECT * FROM students WHERE student_id=? AND password=?";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(studentSql)) {
+
+            ps.setString(1, username);
+            ps.setString(2, password);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return "student";   // 学生登录成功
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null; // 登录失败
+    }
 }

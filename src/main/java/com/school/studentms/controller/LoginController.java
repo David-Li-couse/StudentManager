@@ -2,6 +2,7 @@ package com.school.studentms.controller;
 
 import com.school.studentms.service.LoginService;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -11,14 +12,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import com.school.studentms.MainApp;
 import com.school.studentms.utils.AlertUtil;
-import com.school.studentms.service.LoginService;
 
 public class LoginController {
 
     private MainApp mainApp;
-    private boolean hasShownError = false; // 标记是否显示过错误背景
+    private boolean hasShownError = false;
 
-    private LoginService loginservice = new LoginService();
+    private LoginService loginService = new LoginService();
 
     @FXML
     private TextField usernameField;
@@ -27,18 +27,16 @@ public class LoginController {
     private PasswordField passwordField;
 
     @FXML
-    private AnchorPane rootPane; // 添加对AnchorPane的引用
+    private AnchorPane rootPane;
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
-    // 初始化方法
     @FXML
     private void initialize() {
-        // 确保初始背景是正确的
         resetBackground();
-        hasShownError = false; // 重置标记
+        hasShownError = false;
     }
 
     @FXML
@@ -46,63 +44,69 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        boolean login_admin = loginservice.adminLogin(username, password);
-        boolean login_student = loginservice.studentLogin(username, password);
+        String role = loginService.login(username, password);
 
-        if (login_admin) {
-            // 管理员登录成功
-            if (hasShownError) {
-                // 如果之前显示过错误背景，使用动画恢复
-                resetBackgroundWithAnimation(() -> openMainStage());
-            } else {
-                // 首次正确登录，直接打开主界面
-                openMainStage();
-            }
-
-        }
-        else if(login_student) {
-            // 学生登录成功
-            if (hasShownError) {
-                // 如果之前显示过错误背景，使用动画恢复
-                resetBackgroundWithAnimation(() -> openMainStage());
-            } else {
-                // 首次正确登录，直接打开主界面
-                openMainStage();
-            }
-        }
-        else {
-            // 登录失败，使用动画切换为错误背景
-            setErrorBackgroundWithAnimation();
-            hasShownError = true; // 标记已显示错误背景
-
-            // 显示错误提示 - 使用AlertUtil的正确方法
-            AlertUtil.showErrorAlert("登录失败", "用户名或密码错误！");
-
-            // 清空密码框
-            passwordField.setText("");
+        if ("admin".equals(role)) {
+            handleLoginSuccess("admin", username);
+        } else if ("student".equals(role)) {
+            handleLoginSuccess("student", username);
+        } else {
+            handleLoginFailure();
         }
     }
 
-    // 打开主界面的方法
-    private void openMainStage() {
-        Stage stage = (Stage) usernameField.getScene().getWindow();
-        stage.close();
+    private void handleLoginSuccess(String role, String userId) {
+        // 成功登录，关闭当前登录窗口，打开主界面
+        Stage currentStage = (Stage) usernameField.getScene().getWindow();
 
-        if (mainApp != null) {
-            mainApp.showMainStage();
+        if (hasShownError) {
+            resetBackgroundWithAnimation(() -> {
+                // 动画完成后打开主界面并关闭登录窗口
+                openMainStage(role, userId);
+                currentStage.close();
+            });
         } else {
-            AlertUtil.showErrorAlert("错误", "应用程序引用未设置");
+            openMainStage(role, userId);
+            currentStage.close();
         }
+    }
+
+    private void handleLoginFailure() {
+        // 登录失败，使用动画切换为错误背景
+        setErrorBackgroundWithAnimation();
+        hasShownError = true;
+
+        AlertUtil.showErrorAlert("登录失败", "用户名或密码错误！");
+        passwordField.setText("");
+    }
+
+    private void openMainStage(String role, String userId) {
+        System.out.println("openMainStage called, role = " + role + ", userId = " + userId);
+
+        if (mainApp == null) {
+            System.out.println("ERROR: mainApp is null!");
+            showAlert("系统错误", "应用程序未正确初始化，请重启程序。");
+            return;
+        }
+
+        Platform.runLater(() -> {
+            if ("admin".equals(role)) {
+                System.out.println("打开管理员界面");
+                mainApp.showAdminMainStage();
+            } else if ("student".equals(role)) {
+                System.out.println("打开学生界面");
+                mainApp.showStudentMainStage(userId);
+            }
+        });
     }
 
     // 设置错误背景（带动画）
     private void setErrorBackgroundWithAnimation() {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(150), rootPane);
-        fadeOut.setFromValue(1.0);   // 从完全不透明
-        fadeOut.setToValue(0.3);     // 到30%透明度
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.3);
 
         fadeOut.setOnFinished(e -> {
-            // 在淡出完成后，切换背景图片
             rootPane.setStyle(
                     "-fx-background-image: url('/images/loginerror-bg.png');" +
                             "-fx-background-size: cover;" +
@@ -110,7 +114,6 @@ public class LoginController {
                             "-fx-background-repeat: no-repeat;"
             );
 
-            // 淡入动画
             FadeTransition fadeIn = new FadeTransition(Duration.millis(150), rootPane);
             fadeIn.setFromValue(0.3);
             fadeIn.setToValue(1.0);
@@ -127,20 +130,12 @@ public class LoginController {
         fadeOut.setToValue(0.3);
 
         fadeOut.setOnFinished(e -> {
-            // 切换回正常背景
-            rootPane.setStyle(
-                    "-fx-background-image: url('/images/login-bg.png');" +
-                            "-fx-background-size: cover;" +
-                            "-fx-background-position: center;" +
-                            "-fx-background-repeat: no-repeat;"
-            );
+            resetBackground();
 
-            // 淡入动画
             FadeTransition fadeIn = new FadeTransition(Duration.millis(150), rootPane);
             fadeIn.setFromValue(0.3);
             fadeIn.setToValue(1.0);
             fadeIn.setOnFinished(event -> {
-                // 动画完成后执行回调
                 if (onFinished != null) {
                     onFinished.run();
                 }
@@ -149,17 +144,6 @@ public class LoginController {
         });
 
         fadeOut.play();
-    }
-
-    // 立即设置错误背景（无动画）
-    private void setErrorBackground() {
-        rootPane.setStyle(
-                "-fx-background-image: url('/images/loginerror-bg.png');" +
-                        "-fx-background-size: cover;" +
-                        "-fx-background-position: center;" +
-                        "-fx-background-repeat: no-repeat;"
-        );
-        hasShownError = true;
     }
 
     // 立即恢复原始背景（无动画）
@@ -171,8 +155,6 @@ public class LoginController {
                         "-fx-background-repeat: no-repeat;"
         );
     }
-
-
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

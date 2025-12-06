@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.school.studentms.controller.StudentMainController">
+
+    <top>
+        <Label text="学生个人中心" style="-fx-font-size: 22px; -fx-padding: 15px;"/>
+        <Button fx:id="btnLogout" text="退出登录" onAction="#handleLogout" style="-fx-padding: 10px; -fx-font-size: 14px; -fx-margin-left: 20px;"/>
+    </top>
+
+    <center>
+        <TabPane fx:id="tabPane">
+
+            <!-- 学生信息 -->
+            <Tab text="我的信息" closable="false">
+                <AnchorPane>
+                    <VBox spacing="10" style="-fx-padding: 20;">
+                        <Label text="学号："/>
+                        <TextField fx:id="tfStudentId" editable="false"/>
+
+                        <Label text="姓名："/>
+                        <TextField fx:id="tfName" editable="false"/>
+
+                        <Label text="性别："/>
+                        <TextField fx:id="tfGender" editable="false"/>
+
+                        <Label text="专业："/>
+                        <TextField fx:id="tfMajor" editable="false"/>
+
+                        <Label text="班级："/>
+                        <TextField fx:id="tfClass" editable="false"/>
+
+                        <Label text="电话："/>
+                        <TextField fx:id="tfPhone" editable="false"/>
+
+                        <Label text="邮箱："/>
+                        <TextField fx:id="tfEmail" editable="false"/>
+                    </VBox>
+                </AnchorPane>
+            </Tab>
+
+            <!-- 我的课程 -->
+            <Tab text="我的课程" closable="false">
+                <AnchorPane>
+                    <VBox spacing="10" style="-fx-padding: 20;">
+                        <TableView fx:id="courseTable" prefHeight="400">
+                            <columns>
+                                <TableColumn fx:id="colCourseName" text="课程名称" prefWidth="200"/>
+                                <TableColumn fx:id="colScore" text="成绩" prefWidth="120"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </AnchorPane>
+            </Tab>
+
+            <!-- 修改密码 -->
+            <Tab text="修改密码" closable="false">
+                <AnchorPane>
+                    <VBox spacing="10" style="-fx-padding: 20;">
+                        <Label text="旧密码"/>
+                        <PasswordField fx:id="pfOld"/>
+
+                        <Label text="新密码"/>
+                        <PasswordField fx:id="pfNew"/>
+
+                        <Label text="确认新密码"/>
+                        <PasswordField fx:id="pfConfirm"/>
+
+                        <Button text="提交"
+                                onAction="#handleChangePassword"
+                                style="-fx-padding:8px; -fx-font-size:14px;"/>
+                    </VBox>
+                </AnchorPane>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+</BorderPane>

@@ -7,6 +7,7 @@ import com.school.studentms.model.Clazz;
 import com.school.studentms.service.StudentService;
 import com.school.studentms.service.MajorService;
 import com.school.studentms.service.ClassService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,6 +20,8 @@ import com.school.studentms.utils.AlertUtil;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 public class StudentController {
@@ -382,21 +385,23 @@ public class StudentController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    // 关闭当前窗口
-                    Stage stage = (Stage) studentView.getScene().getWindow();
-                    stage.close();
+                    System.out.println("管理员退出登录");
 
-                    // 重新显示登录窗口
-                    if (mainApp != null) {
-                        mainApp.showLoginWindow();
-                    }
+                    // 获取当前窗口 - 使用任意一个UI元素
+                    Stage currentStage = (Stage) logoutButton.getScene().getWindow();
+
+                    // 关闭当前窗口
+                    currentStage.close();
+
+                    // 注意：不需要再调用 mainApp.showLoginWindow()
+                    // 因为窗口的关闭事件已经在 MainApp 中设置了
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     AlertUtil.showErrorAlert("错误", "退出登录失败：" + e.getMessage());
                 }
             }
         });
-
     }
 
     /*private void showAlert(String title, String message) {
