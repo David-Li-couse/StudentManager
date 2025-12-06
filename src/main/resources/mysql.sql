@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS courses (
     course_name VARCHAR(100) NOT NULL UNIQUE
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- 创建学生表
+-- 创建学生表（包含密码字段）
 CREATE TABLE IF NOT EXISTS students (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id VARCHAR(20) NOT NULL UNIQUE,
@@ -32,9 +32,19 @@ CREATE TABLE IF NOT EXISTS students (
     class_name VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
     email VARCHAR(100),
+    password VARCHAR(100) DEFAULT '123456',  -- 添加密码字段
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (major_name) REFERENCES majors(major_name) ON DELETE CASCADE,
     FOREIGN KEY (class_name) REFERENCES classes(class_name) ON DELETE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- 创建管理员表
+CREATE TABLE IF NOT EXISTS admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    role ENUM('admin', 'super_admin') DEFAULT 'admin',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 插入初始专业数据
@@ -63,18 +73,23 @@ INSERT IGNORE INTO courses (course_code, course_name) VALUES
 ('CS102', '数据结构'),
 ('MA101', '高等数学');
 
--- 插入示例学生数据
-INSERT IGNORE INTO students (student_id, name, gender, major_name, class_name, phone, email) VALUES
-('20230001', '张三', '男', '计算机科学', '计算机1班', '13800138001', 'zhangsan@email.com'),
-('20230002', '李四', '女', '计算机科学', '计算机1班', '13800138002', 'lisi@email.com'),
-('20230003', '王五', '男', '计算机科学', '计算机2班', '13800138003', 'wangwu@email.com'),
-('20230004', '赵六', '女', '电子工程', '电子1班', '13800138004', 'zhaoliu@email.com'),
-('20230005', '钱七', '男', '数学', '数学1班', '13800138005', 'qianqi@email.com'),
-('20230006', '孙八', '女', '物理', '物理1班', '13800138006', 'sunba@email.com'),
-('20230007', '周九', '男', '化学', '化学1班', '13800138007', 'zhoujiu@email.com'),
-('20230008', '吴十', '女', '计算机科学', '计算机3班', '13800138008', 'wushi@email.com');
+-- 插入管理员账号（硬账号：admin/123456）
+INSERT IGNORE INTO admins (username, password, role) VALUES
+('admin', '123456', 'admin'),
+('superadmin', 'admin123', 'super_admin');
 
--- 创建程序设计基础课程表 - 修复：确保字符集一致
+-- 插入示例学生数据（所有学生默认密码为123456）
+INSERT IGNORE INTO students (student_id, name, gender, major_name, class_name, phone, email, password) VALUES
+('20230001', '张三', '男', '计算机科学', '计算机1班', '13800138001', 'zhangsan@email.com', '123456'),
+('20230002', '李四', '女', '计算机科学', '计算机1班', '13800138002', 'lisi@email.com', '123456'),
+('20230003', '王五', '男', '计算机科学', '计算机2班', '13800138003', 'wangwu@email.com', '123456'),
+('20230004', '赵六', '女', '电子工程', '电子1班', '13800138004', 'zhaoliu@email.com', '123456'),
+('20230005', '钱七', '男', '数学', '数学1班', '13800138005', 'qianqi@email.com', '123456'),
+('20230006', '孙八', '女', '物理', '物理1班', '13800138006', 'sunba@email.com', '123456'),
+('20230007', '周九', '男', '化学', '化学1班', '13800138007', 'zhoujiu@email.com', '123456'),
+('20230008', '吴十', '女', '计算机科学', '计算机3班', '13800138008', 'wushi@email.com', '123456');
+
+-- 创建程序设计基础课程表
 CREATE TABLE IF NOT EXISTS course_CS101 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id VARCHAR(20) NOT NULL,
@@ -167,6 +182,11 @@ SELECT
     'students' AS table_name,
     COUNT(*) AS record_count
 FROM students
+UNION ALL
+SELECT
+    'admins' AS table_name,
+    COUNT(*) AS record_count
+FROM admins
 UNION ALL
 SELECT
     'course_CS101' AS table_name,
