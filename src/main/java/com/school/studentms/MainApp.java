@@ -129,11 +129,8 @@ public class MainApp extends Application {
 
             // 窗口关闭时返回到登录界面
             adminStage.setOnCloseRequest(event -> {
-                System.out.println("管理员窗口被关闭，返回登录界面");
-                // 先关闭当前窗口
-                adminStage.close();
-                // 再显示登录窗口
-                showLoginWindow();
+                Platform.exit();
+                System.exit(0);
             });
 
             adminStage.show();
@@ -172,11 +169,8 @@ public class MainApp extends Application {
 
             // 窗口关闭时返回到登录界面
             studentStage.setOnCloseRequest(event -> {
-                System.out.println("学生窗口被关闭，返回登录界面");
-                // 先关闭当前窗口
-                studentStage.close();
-                // 再显示登录窗口
-                showLoginWindow();
+                Platform.exit();
+                System.exit(0);
             });
 
             studentStage.show();

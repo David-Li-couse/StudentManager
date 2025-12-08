@@ -393,7 +393,7 @@ public class StudentController {
 
                     // 关闭当前窗口
                     currentStage.close();
-
+                    mainApp.showLoginWindow();
                     // 注意：不需要再调用 mainApp.showLoginWindow()
                     // 因为窗口的关闭事件已经在 MainApp 中设置了
 

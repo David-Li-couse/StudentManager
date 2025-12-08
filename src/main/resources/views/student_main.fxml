@@ -42,7 +42,7 @@
 
             <Region HBox.hgrow="ALWAYS" />
 
-            <Button fx:id="btnLogout" text="退出登录" stylesheets="@styles.css"
+            <Button fx:id="btnLogout" text="退出登录" onAction="#handleLogout" stylesheets="@styles.css"
                     styleClass="logout-button"/>
         </HBox>
 

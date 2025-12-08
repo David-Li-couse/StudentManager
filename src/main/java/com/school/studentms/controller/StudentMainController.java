@@ -684,6 +684,7 @@ public class StudentMainController {
                     System.out.println("学生退出登录，学号：" + studentId);
                     Stage currentStage = (Stage) btnLogout.getScene().getWindow();
                     currentStage.close();
+                    mainApp.showLoginWindow();
                 } catch (Exception e) {
                     e.printStackTrace();
                     showAlert("错误", "退出登录失败：" + e.getMessage());
