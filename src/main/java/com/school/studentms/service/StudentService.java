@@ -159,4 +159,19 @@ public class StudentService {
         }
         return students;
     }
+
+    public void resetPassword(int id) {
+        String sql = "UPDATE students SET password = 123456 WHERE id = ?";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("重置密码失败，没有找到对应ID的记录。");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("重置密码失败: " + e.getMessage());
+        }
+    }
 }

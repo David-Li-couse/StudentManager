@@ -197,6 +197,8 @@
                             styleClass="delete-button" />
                     <Button text="重置表单" fx:id="resetButton" onAction="#handleResetForm" stylesheets="@styles.css"
                             styleClass="reset-button"/>
+                    <Button text="重置密码" fx:id="resetStudentPasswordButton" onAction="#handleResetStudentPassword" stylesheets="@styles.css"
+                            styleClass="reset-button"/>
                 </HBox>
             </VBox>
         </HBox>

@@ -45,6 +45,7 @@ public class StudentController {
     @FXML private Button deleteButton;
     @FXML private TextField searchField;
     @FXML private Button resetButton; // 新增的按钮
+    @FXML private Button resetStudentPasswordButton;
     @FXML private ImageView genderImageView; // 新增的ImageView
     @FXML private Label genderImageLabel; // 新增的Label
     @FXML private Button logoutButton; // 退出登录按钮
@@ -412,4 +413,20 @@ public class StudentController {
         alert.showAndWait();
     }
     */
+   @FXML
+    private void handleResetStudentPassword() {
+        Student selectedStudent = studentTable.getSelectionModel().getSelectedItem();
+        if (selectedStudent == null) {
+            AlertUtil.showErrorAlert("选择错误", "请先选择一个学生账号！");
+            return;
+        }
+        String studentId = studentIdField.getText().trim();
+        try{
+            studentService.resetPassword(selectedStudent.getId());
+            AlertUtil.showInfoAlert("成功", "学生密码重置成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            AlertUtil.showErrorAlert("错误", "重置密码失败：" + e.getMessage());
+        }
+    }
 }
