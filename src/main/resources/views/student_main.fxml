@@ -2,81 +2,359 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.school.studentms.controller.StudentMainController">
 
-    <top>
-        <Label text="学生个人中心" style="-fx-font-size: 22px; -fx-padding: 15px;"/>
-        <Button fx:id="btnLogout" text="退出登录" onAction="#handleLogout" style="-fx-padding: 10px; -fx-font-size: 14px; -fx-margin-left: 20px;"/>
-    </top>
+    <!-- 背景图片层（自适应全屏）- 初始为我的信息背景 -->
+    <Pane fx:id="backgroundPane"
+          style="-fx-background-image: url('/images/Student-bg.png');
+                 -fx-background-size: cover;
+                 -fx-background-position: center;
+                 -fx-background-repeat: no-repeat;"
+          AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0"/>
 
-    <center>
-        <TabPane fx:id="tabPane">
+    <!-- 主内容容器 -->
+    <VBox spacing="15" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
 
-            <!-- 学生信息 -->
-            <Tab text="我的信息" closable="false">
-                <AnchorPane>
-                    <VBox spacing="10" style="-fx-padding: 20;">
-                        <Label text="学号："/>
-                        <TextField fx:id="tfStudentId" editable="false"/>
+        <!-- 标题栏 -->
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="学生个人中心"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
 
-                        <Label text="姓名："/>
-                        <TextField fx:id="tfName" editable="false"/>
+            <!-- 导航按钮 -->
+            <HBox spacing="10">
+                <Button text="我的信息" fx:id="btnMyInfo" stylesheets="@styles.css"
+                        styleClass="my-information-button"/>
+                <Button text="我的课程" fx:id="btnMyCourses" stylesheets="@styles.css"
+                        styleClass="course-button"/>
+                <Button text="课程成绩" fx:id="btnMyGrades" stylesheets="@styles.css"
+                        styleClass="back-button"/>
+                <Button text="修改密码" fx:id="btnChangePassword" stylesheets="@styles.css"
+                        styleClass="update-password-button"/>
+            </HBox>
 
-                        <Label text="性别："/>
-                        <TextField fx:id="tfGender" editable="false"/>
+            <Region HBox.hgrow="ALWAYS" />
 
-                        <Label text="专业："/>
-                        <TextField fx:id="tfMajor" editable="false"/>
+            <Button fx:id="btnLogout" text="退出登录" stylesheets="@styles.css"
+                    styleClass="logout-button"/>
+        </HBox>
 
-                        <Label text="班级："/>
-                        <TextField fx:id="tfClass" editable="false"/>
+        <Separator style="-fx-background-color: #cccccc;" />
 
-                        <Label text="电话："/>
-                        <TextField fx:id="tfPhone" editable="false"/>
+        <!-- 主要内容区域（卡片式设计） -->
+        <AnchorPane fx:id="contentPane" VBox.vgrow="ALWAYS">
 
-                        <Label text="邮箱："/>
-                        <TextField fx:id="tfEmail" editable="false"/>
+            <!-- 我的信息页面（类似管理员卡片设计） -->
+            <VBox fx:id="infoPane" spacing="15"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.95);
+                         -fx-background-radius: 8;
+                         -fx-border-radius: 8;
+                         -fx-border-color: #dddddd;
+                         -fx-border-width: 1;
+                         -fx-padding: 20;"
+                  visible="true" managed="true"
+                  AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+                  AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+
+                <Label text="个人信息"
+                       style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+
+                <HBox spacing="30" alignment="TOP_LEFT">
+                    <!-- 左侧：学生照片区域 -->
+                    <VBox spacing="10" alignment="TOP_CENTER" prefWidth="220">
+                        <Label text="学生照片"
+                               style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #555555;"/>
+
+                        <!-- 图片容器 -->
+                        <StackPane style="-fx-background-color: white;
+                            -fx-background-radius: 8;
+                            -fx-border-radius: 8;
+                            -fx-border-color: #cccccc;
+                            -fx-border-width: 1;
+                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.5, 0, 2);
+                            -fx-padding: 5;"
+                                   alignment="CENTER">
+                            <!-- 性别图片 -->
+                            <ImageView fx:id="genderImageView"
+                                       fitWidth="190"
+                                       fitHeight="265"
+                                       preserveRatio="true"
+                                       smooth="true"
+                                       pickOnBounds="true"
+                                       style="-fx-background-color: transparent;" />
+                        </StackPane>
+
+                        <!-- 学生姓名 -->
+                        <Label fx:id="genderImageLabel" text="学生信息"
+                               style="-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;"/>
                     </VBox>
-                </AnchorPane>
-            </Tab>
 
-            <!-- 我的课程 -->
-            <Tab text="我的课程" closable="false">
-                <AnchorPane>
-                    <VBox spacing="10" style="-fx-padding: 20;">
-                        <TableView fx:id="courseTable" prefHeight="400">
-                            <columns>
-                                <TableColumn fx:id="colCourseName" text="课程名称" prefWidth="200"/>
-                                <TableColumn fx:id="colScore" text="成绩" prefWidth="120"/>
-                            </columns>
-                        </TableView>
+                    <!-- 右侧：学生信息表单 -->
+                    <VBox spacing="15" HBox.hgrow="ALWAYS">
+                        <GridPane hgap="15" vgap="12">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="RIGHT" hgrow="NEVER" prefWidth="100" />
+                                <ColumnConstraints hgrow="ALWAYS" prefWidth="250" />
+                                <ColumnConstraints halignment="RIGHT" hgrow="NEVER" prefWidth="100" />
+                                <ColumnConstraints hgrow="ALWAYS" prefWidth="250" />
+                            </columnConstraints>
+
+                            <!-- 第1行 -->
+                            <Label text="学号：" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                                   style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                            <TextField fx:id="tfStudentId" editable="false" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                       style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                            <Label text="姓名：" GridPane.rowIndex="0" GridPane.columnIndex="2"
+                                   style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                            <TextField fx:id="tfName" editable="false" GridPane.rowIndex="0" GridPane.columnIndex="3"
+                                       style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                            <!-- 第2行 -->
+                            <Label text="性别：" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                                   style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                            <TextField fx:id="tfGender" editable="false" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                       style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                            <Label text="专业：" GridPane.rowIndex="1" GridPane.columnIndex="2"
+                                   style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                            <TextField fx:id="tfMajor" editable="false" GridPane.rowIndex="1" GridPane.columnIndex="3"
+                                       style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                            <!-- 第3行 -->
+                            <Label text="班级：" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                                   style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                            <TextField fx:id="tfClass" editable="false" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                       style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                            <Label text="联系电话：" GridPane.rowIndex="2" GridPane.columnIndex="2"
+                                   style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                            <TextField fx:id="tfPhone" editable="false" GridPane.rowIndex="2" GridPane.columnIndex="3"
+                                       style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                            <!-- 第4行 -->
+                            <Label text="邮箱：" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                                   style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                            <TextField fx:id="tfEmail" editable="false" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                                       style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                            <Label text="入学时间：" GridPane.rowIndex="3" GridPane.columnIndex="2"
+                                   style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                            <TextField fx:id="tfEnrollmentDate" editable="false" GridPane.rowIndex="3" GridPane.columnIndex="3"
+                                       style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+                        </GridPane>
+
+                        <!-- 附加信息区域 -->
+                        <VBox spacing="10" style="-fx-padding: 20 0 0 0;">
+                            <Label text="个人简介"
+                                   style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                            <TextArea fx:id="taBio"
+                                      prefHeight="100"
+                                      style="-fx-background-radius: 4; -fx-border-color: #cccccc;"/>
+                            <Button text="保存简介" fx:id="btnSaveBio" onAction="#handleSaveBio" stylesheets="@styles.css"
+                                    alignment="CENTER_RIGHT"
+                                    styleClass="save-button"/>
+                        </VBox>
                     </VBox>
-                </AnchorPane>
-            </Tab>
+                </HBox>
+            </VBox>
 
-            <!-- 修改密码 -->
-            <Tab text="修改密码" closable="false">
-                <AnchorPane>
-                    <VBox spacing="10" style="-fx-padding: 20;">
-                        <Label text="旧密码"/>
-                        <PasswordField fx:id="pfOld"/>
+            <!-- 我的课程页面 -->
+            <VBox fx:id="coursesPane" spacing="15"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.95);
+                         -fx-background-radius: 8;
+                         -fx-border-radius: 8;
+                         -fx-border-color: #dddddd;
+                         -fx-border-width: 1;
+                         -fx-padding: 20;"
+                  visible="false" managed="false"
+                  AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+                  AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
 
-                        <Label text="新密码"/>
-                        <PasswordField fx:id="pfNew"/>
+                <Label text="我的课程"
+                       style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
 
-                        <Label text="确认新密码"/>
-                        <PasswordField fx:id="pfConfirm"/>
+                <!-- 课程列表表格 -->
+                <TableView fx:id="courseTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colCourseCode" text="课程代码" prefWidth="120"/>
+                        <TableColumn fx:id="colCourseName" text="课程名称" prefWidth="200"/>
+                        <TableColumn fx:id="colCourseTeacher" text="授课教师" prefWidth="120"/>
+                        <TableColumn fx:id="colCourseCredit" text="学分" prefWidth="80"/>
+                        <TableColumn fx:id="colCourseTime" text="上课时间" prefWidth="150"/>
+                    </columns>
+                </TableView>
 
-                        <Button text="提交"
-                                onAction="#handleChangePassword"
-                                style="-fx-padding:8px; -fx-font-size:14px;"/>
+                <!-- 课程统计信息 -->
+                <HBox spacing="30" style="-fx-padding: 15 0 0 0;">
+                    <VBox spacing="5" style="-fx-background-color: #E6D6FF; -fx-background-radius: 8; -fx-padding: 10 15;">
+                        <Label text="本学期课程数" style="-fx-text-fill: #666666; -fx-font-size: 12px;"/>
+                        <Label fx:id="lblCourseCount" text="0"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
                     </VBox>
-                </AnchorPane>
-            </Tab>
 
-        </TabPane>
-    </center>
+                    <VBox spacing="5" style="-fx-background-color: #AFEEEE; -fx-background-radius: 8; -fx-padding: 10 15;">
+                        <Label text="总学分" style="-fx-text-fill: #666666; -fx-font-size: 12px;"/>
+                        <Label fx:id="lblTotalCredits" text="0"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                    </VBox>
 
-</BorderPane>
+                    <VBox spacing="5" style="-fx-background-color: #F1B26F; -fx-background-radius: 8; -fx-padding: 10 15;">
+                        <Label text="必修课数量" style="-fx-text-fill: #666666; -fx-font-size: 12px;"/>
+                        <Label fx:id="lblRequiredCount" text="0"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                    </VBox>
+
+                    <VBox spacing="5" style="-fx-background-color: #C8F293; -fx-background-radius: 8; -fx-padding: 10 15;">
+                        <Label text="选修课数量" style="-fx-text-fill: #666666; -fx-font-size: 12px;"/>
+                        <Label fx:id="lblElectiveCount" text="0"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- 课程成绩页面 -->
+            <VBox fx:id="gradesPane" spacing="15"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.95);
+                         -fx-background-radius: 8;
+                         -fx-border-radius: 8;
+                         -fx-border-color: #dddddd;
+                         -fx-border-width: 1;
+                         -fx-padding: 20;"
+                  visible="false" managed="false"
+                  AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+                  AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+
+                <Label text="课程成绩"
+                       style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+
+                <!-- 成绩表格 -->
+                <TableView fx:id="gradeTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colGradeCourseCode" text="课程代码" prefWidth="100"/>
+                        <TableColumn fx:id="colGradeCourseName" text="课程名称" prefWidth="180"/>
+                        <TableColumn fx:id="colGradeScore" text="成绩" prefWidth="100"/>
+                        <TableColumn fx:id="colGradeCredit" text="学分" prefWidth="80"/>
+                        <TableColumn fx:id="colGradeGPA" text="绩点" prefWidth="80"/>
+                        <TableColumn fx:id="colGradeStatus" text="状态" prefWidth="100"/>
+                    </columns>
+                </TableView>
+
+                <!-- 成绩统计信息 -->
+                <HBox spacing="30" style="-fx-padding: 15 0 0 0;">
+                    <VBox spacing="5" style="-fx-background-color: #E6D6FF; -fx-background-radius: 8; -fx-padding: 10 15;">
+                        <Label text="平均成绩" style="-fx-text-fill: #666666; -fx-font-size: 12px;"/>
+                        <Label fx:id="lblAverageScore" text="0.00"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                    </VBox>
+
+                    <VBox spacing="5" style="-fx-background-color: #AFEEEE; -fx-background-radius: 8; -fx-padding: 10 15;">
+                        <Label text="平均绩点" style="-fx-text-fill: #666666; -fx-font-size: 12px;"/>
+                        <Label fx:id="lblAverageGPA" text="0.00"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                    </VBox>
+
+                    <VBox spacing="5" style="-fx-background-color: #F1B26F; -fx-background-radius: 8; -fx-padding: 10 15;">
+                        <Label text="最高分" style="-fx-text-fill: #666666; -fx-font-size: 12px;"/>
+                        <Label fx:id="lblHighestScore" text="0"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                    </VBox>
+
+                    <VBox spacing="5" style="-fx-background-color: #C8F293; -fx-background-radius: 8; -fx-padding: 10 15;">
+                        <Label text="已修学分" style="-fx-text-fill: #666666; -fx-font-size: 12px;"/>
+                        <Label fx:id="lblCompletedCredits" text="0"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- 成绩分布图 -->
+                <VBox spacing="10" style="-fx-padding: 20 0 0 0;">
+                    <Label text="成绩分布"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                    <HBox spacing="10" style="-fx-background-color: #FFEDC9; -fx-padding: 15px; -fx-background-radius: 8px;">
+                        <VBox alignment="CENTER">
+                            <Label text="优秀 (90-100)" style="-fx-text-fill: #4CAF50;-fx-font-weight: bold;"/>
+                            <Label fx:id="lblExcellentCount" text="0门" style="-fx-font-size: 14px;-fx-font-weight: bold;"/>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                            <Label text="良好 (80-89)" style="-fx-text-fill: #2196F3;-fx-font-weight: bold;"/>
+                            <Label fx:id="lblGoodCount" text="0门" style="-fx-font-size: 14px;-fx-font-weight: bold;"/>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                            <Label text="中等 (70-79)" style="-fx-text-fill: #FF9800;-fx-font-weight: bold;"/>
+                            <Label fx:id="lblMediumCount" text="0门" style="-fx-font-size: 14px;-fx-font-weight: bold;"/>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                            <Label text="及格 (60-69)" style="-fx-text-fill: #FFC107;-fx-font-weight: bold;"/>
+                            <Label fx:id="lblPassCount" text="0门" style="-fx-font-size: 14px;-fx-font-weight: bold;"/>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                            <Label text="不及格 (&lt;60)" style="-fx-text-fill: #F44336;-fx-font-weight: bold;"/>
+                            <Label fx:id="lblFailCount" text="0门" style="-fx-font-size: 14px;-fx-font-weight: bold;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- 修改密码页面 -->
+            <VBox fx:id="passwordPane" spacing="15"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.95);
+                         -fx-background-radius: 8;
+                         -fx-border-radius: 8;
+                         -fx-border-color: #dddddd;
+                         -fx-border-width: 1;
+                         -fx-padding: 30;"
+                  visible="false" managed="false"
+                  AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+                  AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+
+                <Label text="修改密码"
+                       style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-padding: 0 0 20 0;"/>
+
+                <GridPane hgap="15" vgap="20" maxWidth="500">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" prefWidth="120" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+
+                    <Label text="旧密码：" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                           style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                    <PasswordField fx:id="pfOld" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                   style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                    <Label text="新密码：" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                           style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                    <PasswordField fx:id="pfNew" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                   style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                    <Label text="确认新密码：" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                           style="-fx-text-fill: #333333; -fx-font-size: 14px;"/>
+                    <PasswordField fx:id="pfConfirm" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                   style="-fx-background-radius: 4; -fx-padding: 8 10;"/>
+
+                    <!-- 密码强度提示 -->
+                    <HBox GridPane.rowIndex="3" GridPane.columnSpan="2" spacing="10">
+                        <Label text="密码要求：8-16位，包含字母和数字"
+                               style="-fx-text-fill: #666666; -fx-font-size: 12px;"/>
+                    </HBox>
+
+                    <!-- 操作按钮 -->
+                    <HBox GridPane.rowIndex="4" GridPane.columnSpan="2" spacing="15"
+                          alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+                        <Button text="取消" onAction="#handleCancelPasswordChange" stylesheets="@styles.css"
+                                styleClass="cancel-button"/>
+                        <Button text="提交" onAction="#handleChangePassword" stylesheets="@styles.css"
+                                styleClass="admit-button"/>
+                    </HBox>
+                </GridPane>
+            </VBox>
+        </AnchorPane>
+    </VBox>
+</AnchorPane>

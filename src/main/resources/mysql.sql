@@ -202,3 +202,5 @@ SELECT
     'course_MA101' AS table_name,
     COUNT(*) AS record_count
 FROM course_MA101;
+
+ALTER TABLE students ADD COLUMN bio TEXT AFTER email;

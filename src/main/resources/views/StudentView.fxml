@@ -27,9 +27,9 @@
                    style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
             <HBox spacing="10">
                 <Button text="专业班级管理" onAction="#handleMajorClassManagement" stylesheets="@styles.css"
-                        styleClass="student-majorclass-button"/>
+                        styleClass="majorclass-button"/>
                 <Button text="课程管理" onAction="#handleCourseManagement" stylesheets="@styles.css"
-                        styleClass="student-course-button"/>
+                        styleClass="course-button"/>
             </HBox>
             <Region HBox.hgrow="ALWAYS" />
 
@@ -59,9 +59,9 @@
                                HBox.hgrow="ALWAYS"
                                style="-fx-background-radius: 4;"/>
                     <Button text="搜索" onAction="#handleSearch" stylesheets="@styles.css"
-                            styleClass="student-search-button"/>
+                            styleClass="search-button"/>
                     <Button text="清空" onAction="#clearSearch" stylesheets="@styles.css"
-                            styleClass="student-clear-button"/>
+                            styleClass="clear-button"/>
                     <Button text="刷新" onAction="#handleRefresh" stylesheets="@styles.css"
                             styleClass="refresh-button"/>
                 </HBox>
@@ -198,7 +198,7 @@
                     <Button text="重置表单" fx:id="resetButton" onAction="#handleResetForm" stylesheets="@styles.css"
                             styleClass="reset-button"/>
                     <Button text="重置密码" fx:id="resetStudentPasswordButton" onAction="#handleResetStudentPassword" stylesheets="@styles.css"
-                            styleClass="reset-button"/>
+                            styleClass="reset-password-button"/>
                 </HBox>
             </VBox>
         </HBox>

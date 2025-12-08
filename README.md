@@ -31,9 +31,9 @@
 
 #上手指南
 安装正确版本的JDK，Maven，Javafx
-1、将/src/main/rescourse/mysql.sql脚本在你的mysql上执行,在/src/main/resourse/application.properties中修改数据库连接信息
-2、根据配置更改版本号
-3、在idea中打开项目文件StudentManager
-4、在idea最顶端的运行按钮的左边有个向下的小三角，点击小三角，点击编辑配置：点击添加，选择应用程序/Application，名称填写MainApp，构建并运行选择java版本（推荐21.0.6），主类填写com.school.studentms.MainApp，点击修改选项，选择添加虚拟机选项并填写--module-path "【Java的lib路径】" --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base环境变量填写CLASSPATH=target/classes，点击应用，再点击确定
-5、点击文件，选择项目结构，在项目设置中点击项目，在SDK一栏选择java版本，点击模块，在SDK一栏选择java版本；在平台设置中点击SDK，选择java版本，点击应用，点击确定
-6、同步maven项目
+#1、将/src/main/rescourse/mysql.sql脚本在你的mysql上执行,在/src/main/resourse/application.properties中修改数据库连接信息
+#2、根据配置更改版本号
+#3、在idea中打开项目文件StudentManager
+#4、在idea最顶端的运行按钮的左边有个向下的小三角，点击小三角，点击编辑配置：点击添加，选择应用程序/Application，名称填写MainApp，构建并运行选择java版本（推荐21.0.6），主类填写com.school.studentms.MainApp，点击修改选项，选择添加虚拟机选项并填写--module-path "【Java的lib路径】" --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base环境变量填写CLASSPATH=target/classes，点击应用，再点击确定
+#5、点击文件，选择项目结构，在项目设置中点击项目，在SDK一栏选择java版本，点击模块，在SDK一栏选择java版本；在平台设置中点击SDK，选择java版本，点击应用，点击确定
+#6、同步maven项目

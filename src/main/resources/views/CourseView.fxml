@@ -56,9 +56,9 @@
                     <TextField fx:id="courseSearchField" promptText="按课程代码或名称搜索..."
                                prefWidth="300" style="-fx-background-radius: 4;"/>
                     <Button text="搜索" onAction="#handleCourseSearch" stylesheets="@styles.css"
-                            styleClass="student-search-button"/>
+                            styleClass="search-button"/>
                     <Button text="清空" onAction="#clearCourseSearch" stylesheets="@styles.css"
-                            styleClass="student-clear-button"/>
+                            styleClass="clear-button"/>
                 </HBox>
 
                 <!-- 课程表格 -->
