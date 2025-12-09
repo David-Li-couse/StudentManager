@@ -145,7 +145,24 @@ public class CourseService {
         return false;
     }
 
+    private boolean isStudentInCourse(String courseCode, String studentId) {
+        String tableName = "course_" + courseCode.replaceAll("[^a-zA-Z0-9_]", "_");
+        String sql = "SELECT COUNT(*) FROM " + tableName + " WHERE student_id = ?";
 
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, studentId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            // 如果表不存在，返回false
+            return false;
+        }
+        return false;
+    }
 
     public boolean addStudentToCourse(String courseCode, String studentId) {
         // 先获取学生信息
@@ -161,6 +178,10 @@ public class CourseService {
         }
 
         String tableName = "course_" + courseCode.replaceAll("[^a-zA-Z0-9_]", "_");
+        // 检查学生是否已在课程中
+        if (isStudentInCourse(courseCode, studentId)) {
+            throw new RuntimeException("该学生已经在此课程中，不能重复分配");
+        }
         String sql = "INSERT INTO " + tableName + " (student_id, student_name, gender, major_name) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseUtil.getConnection();
@@ -193,7 +214,7 @@ public class CourseService {
         }
     }
 
-    public List<Student> searchCourses(String keyword) {
+    public List<Course> searchCourses(String keyword) {
         List<Course> courses = new ArrayList<>();
         String sql = "SELECT course_code, course_name FROM courses " +
                 "WHERE course_code LIKE ? OR course_name LIKE ? ORDER BY course_code";
@@ -209,14 +230,14 @@ public class CourseService {
                     Course course = new Course();
                     course.setCourseCode(rs.getString("course_code"));
                     course.setCourseName(rs.getString("course_name"));
-                    // 这里需要将Course转换为Student或其他合适的模型，或者创建新的搜索方法
+                    courses.add(course);  // 将课程对象添加到列表
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("搜索课程失败: " + e.getMessage());
         }
-        return new ArrayList<>(); // 临时返回空列表
+        return courses;  // 返回课程列表
     }
 
     public Double getStudentScore(String courseCode, String studentId) {
@@ -275,5 +296,26 @@ public class CourseService {
             throw new RuntimeException("查询课程学生失败: " + e.getMessage());
         }
         return students;
+    }
+
+    public boolean removeStudentFromCourse(String courseCode, String studentId) {
+        // 检查参数是否有效
+        if (courseCode == null || courseCode.trim().isEmpty() ||
+                studentId == null || studentId.trim().isEmpty()) {
+            throw new IllegalArgumentException("课程代码或学号不能为空");
+        }
+
+        String tableName = "course_" + courseCode.replaceAll("[^a-zA-Z0-9_]", "_");
+        String sql = "DELETE FROM " + tableName + " WHERE student_id = ?";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, studentId);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("从课程中移除学生失败: " + e.getMessage());
+        }
     }
 }

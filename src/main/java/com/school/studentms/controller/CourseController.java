@@ -276,24 +276,40 @@ public class CourseController {
     @FXML
     private void handleCourseSearch() {
         String keyword = courseSearchField.getText().trim();
+
         if (keyword.isEmpty()) {
             loadCourseData();
             return;
         }
 
-        // 这里需要实现课程搜索功能
-        // 由于CourseService中没有搜索方法，暂时使用全量加载
-        loadCourseData();
+        try {
+            // 调用服务层的搜索方法，直接从数据库搜索
+            List<Course> searchResults = courseService.searchCourses(keyword);
 
-        // 过滤显示
-        ObservableList<Course> filteredData = FXCollections.observableArrayList();
-        for (Course course : courseData) {
-            if (course.getCourseCode().contains(keyword) ||
-                    course.getCourseName().toLowerCase().contains(keyword.toLowerCase())) {
-                filteredData.add(course);
+            // 将结果转换为 ObservableList 并设置到表格
+            ObservableList<Course> filteredData = FXCollections.observableArrayList();
+            filteredData.addAll(searchResults);
+            courseTable.setItems(filteredData);
+
+            // 显示搜索到的记录数
+            if (searchResults.isEmpty()) {
+                AlertUtil.showInfoAlert("搜索结果", "未找到匹配的课程");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertUtil.showErrorAlert("搜索错误", "搜索课程时发生错误：" + e.getMessage());
+
+            // 如果搜索失败，回退到全量加载和内存过滤
+            loadCourseData();
+            ObservableList<Course> filteredData = FXCollections.observableArrayList();
+            for (Course course : courseData) {
+                if (course.getCourseCode().toLowerCase().contains(keyword.toLowerCase()) ||
+                        course.getCourseName().toLowerCase().contains(keyword.toLowerCase())) {
+                    filteredData.add(course);
+                }
+            }
+            courseTable.setItems(filteredData);
         }
-        courseTable.setItems(filteredData);
     }
 
     @FXML
@@ -404,13 +420,17 @@ public class CourseController {
 
         if (confirmed) {
             try {
-                // 这里需要实现从课程中移除学生的功能
-                // 由于CourseService中没有移除学生的方法，暂时使用占位符
-                // boolean success = courseService.removeStudentFromCourse(...);
+                boolean success = courseService.removeStudentFromCourse(
+                        selectedCourse.getCourseCode(),
+                        selectedStudent.getStudentId()
+                );
 
-                // 暂时显示成功消息
-                loadCourseStudentsData(selectedCourse.getCourseCode());
-                AlertUtil.showInfoAlert("成功", "学生移除成功！");
+                if (success) {
+                    // 刷新课程学生列表
+                    loadCourseStudentsData(selectedCourse.getCourseCode());
+                    AlertUtil.showInfoAlert("成功", "学生移除成功！");
+                }
+
             } catch (Exception e) {
                 AlertUtil.showErrorAlert("错误", "移除学生失败：" + e.getMessage());
                 e.printStackTrace();
