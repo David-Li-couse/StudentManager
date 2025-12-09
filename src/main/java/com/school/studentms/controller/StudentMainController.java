@@ -15,7 +15,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-
+import com.school.studentms.utils.AlertUtil;
+import javafx.scene.control.Alert;
 import java.sql.*;
 
 public class StudentMainController {
@@ -315,7 +316,7 @@ public class StudentMainController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("错误", "加载学生信息失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "加载学生信息失败："+ e.getMessage());
         }
     }
 
@@ -416,7 +417,7 @@ public class StudentMainController {
                                 }
                             }
                         } catch (SQLException ex3) {
-                            showAlert("错误", "无法保存个人简介：数据库字段创建失败");
+                            AlertUtil.showErrorAlert("错误", "无法保存个人简介：数据库字段创建失败");
                             return;
                         }
                     }
@@ -424,14 +425,14 @@ public class StudentMainController {
             }
 
             if (success) {
-                showAlert("成功", "个人简介已成功保存！");
+                AlertUtil.showInfoAlert("刷新成功", "个人简介已成功保存！");
             } else {
-                showAlert("提示", "保存失败，未找到该学生记录！");
+                AlertUtil.showErrorAlert("错误", "保存失败，未找到该学生记录！");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("错误", "保存个人简介失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "保存个人简介失败："+ e.getMessage());
         }
     }
 
@@ -496,7 +497,7 @@ public class StudentMainController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("错误", "加载课程数据失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "加载课程数据失败："+ e.getMessage());
         }
     }
 
@@ -654,7 +655,7 @@ public class StudentMainController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("错误", "加载成绩数据失败：" + e.getMessage());
+            AlertUtil.showErrorAlert("错误", "加载成绩数据失败："+ e.getMessage());
         }
     }
 
@@ -675,11 +676,9 @@ public class StudentMainController {
     @FXML
     public void handleLogout() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("确认退出");
-        alert.setHeaderText("确定要退出登录吗？");
+        boolean confirm=AlertUtil.showConfirmDialog("确认退出","确定要退出登录吗？");
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
+       if (confirm){
                 try {
                     System.out.println("学生退出登录，学号：" + studentId);
                     Stage currentStage = (Stage) btnLogout.getScene().getWindow();
@@ -687,10 +686,9 @@ public class StudentMainController {
                     mainApp.showLoginWindow();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    showAlert("错误", "退出登录失败：" + e.getMessage());
+                    AlertUtil.showErrorAlert("错误", "退出登录失败："+ e.getMessage());
                 }
             }
-        });
     }
 
     @FXML
@@ -701,17 +699,17 @@ public class StudentMainController {
 
         // 验证输入
         if (oldP.isEmpty() || newP.isEmpty() || confirm.isEmpty()) {
-            showAlert("错误", "请填写所有密码字段");
+            AlertUtil.showErrorAlert("错误", "请填写所有密码字段！");
             return;
         }
 
         if (!newP.equals(confirm)) {
-            showAlert("错误", "两次新密码不一致！");
+            AlertUtil.showErrorAlert("错误", "两次新密码不一致！");
             return;
         }
 
         if (newP.length() < 6 || newP.length() > 20) {
-            showAlert("错误", "密码长度必须在6-20位之间！");
+            AlertUtil.showErrorAlert("错误", "密码长度必须在6-20位之间！");
             return;
         }
 
@@ -724,7 +722,7 @@ public class StudentMainController {
             ResultSet rs = ps1.executeQuery();
 
             if (!rs.next()) {
-                showAlert("错误", "旧密码错误！");
+                AlertUtil.showErrorAlert("错误", "旧密码错误！");
                 return;
             }
 
@@ -735,7 +733,7 @@ public class StudentMainController {
             ps2.setString(2, studentId);
             ps2.executeUpdate();
 
-            showAlert("成功", "密码修改成功！");
+            AlertUtil.showInfoAlert("成功", "密码修改成功！");
 
             // 清空密码字段
             pfOld.setText("");
@@ -744,7 +742,7 @@ public class StudentMainController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("错误", "修改密码失败！");
+            AlertUtil.showErrorAlert("错误", "修改密码失败！");
         }
     }
 
