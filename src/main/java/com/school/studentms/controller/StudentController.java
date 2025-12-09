@@ -326,6 +326,66 @@ public class StudentController {
             return;
         }
 
+        // 比较修改前后的差异，用于确认提示
+        boolean hasChanges = !studentId.equals(selectedStudent.getStudentId()) ||
+                !name.equals(selectedStudent.getName()) ||
+                !gender.equals(selectedStudent.getGender()) ||
+                !majorName.equals(selectedStudent.getMajorName()) ||
+                !className.equals(selectedStudent.getClassName()) ||
+                !phone.equals(selectedStudent.getPhone()) ||
+                !email.equals(selectedStudent.getEmail());
+
+        if (!hasChanges) {
+            AlertUtil.showInfoAlert("提示", "没有检测到任何修改！");
+            return;
+        }
+
+        // 构建修改确认消息
+        StringBuilder confirmMessage = new StringBuilder();
+        confirmMessage.append("请确认以下修改：\n\n");
+
+        if (!studentId.equals(selectedStudent.getStudentId())) {
+            confirmMessage.append("学号: ").append(selectedStudent.getStudentId())
+                    .append(" → ").append(studentId).append("\n");
+        }
+        if (!name.equals(selectedStudent.getName())) {
+            confirmMessage.append("姓名: ").append(selectedStudent.getName())
+                    .append(" → ").append(name).append("\n");
+        }
+        if (!gender.equals(selectedStudent.getGender())) {
+            confirmMessage.append("性别: ").append(selectedStudent.getGender())
+                    .append(" → ").append(gender).append("\n");
+        }
+        if (!majorName.equals(selectedStudent.getMajorName())) {
+            confirmMessage.append("专业: ").append(selectedStudent.getMajorName())
+                    .append(" → ").append(majorName).append("\n");
+        }
+        if (!className.equals(selectedStudent.getClassName())) {
+            confirmMessage.append("班级: ").append(selectedStudent.getClassName())
+                    .append(" → ").append(className).append("\n");
+        }
+        if (!phone.equals(selectedStudent.getPhone())) {
+            confirmMessage.append("电话: ").append(selectedStudent.getPhone())
+                    .append(" → ").append(phone).append("\n");
+        }
+        if (!email.equals(selectedStudent.getEmail())) {
+            confirmMessage.append("邮箱: ").append(selectedStudent.getEmail())
+                    .append(" → ").append(email).append("\n");
+        }
+
+        confirmMessage.append("\n确定要保存这些修改吗？");
+
+        // 显示确认对话框
+        boolean confirmed = AlertUtil.showConfirmDialog(
+                "确认修改",
+                confirmMessage.toString()
+        );
+
+        if (!confirmed) {
+            AlertUtil.showInfoAlert("操作取消", "修改已取消，学生信息保持不变。");
+            return;
+        }
+
         try {
             selectedStudent.setStudentId(studentId);
             selectedStudent.setName(name);
