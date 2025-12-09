@@ -37,6 +37,21 @@ public class LoginController {
     private void initialize() {
         resetBackground();
         hasShownError = false;
+
+        // 监听输入框回车键登录
+        usernameField.setOnAction(e -> handleLogin());
+        passwordField.setOnAction(e -> handleLogin());
+
+        // 监听整个界面按下回车也能登录
+        rootPane.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case ENTER:
+                    handleLogin();
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     @FXML
