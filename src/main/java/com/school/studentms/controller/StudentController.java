@@ -439,30 +439,27 @@ public class StudentController {
 
     @FXML
     private void handleLogout() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("确认退出");
-        alert.setHeaderText("确定要退出登录吗？");
+        // 使用 AlertUtil 显示确认对话框
+        boolean confirm = AlertUtil.showConfirmDialog("确认退出", "确定要退出登录吗？");
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    System.out.println("管理员退出登录");
+        if (confirm) {
+            try {
+                System.out.println("管理员退出登录");
 
-                    // 获取当前窗口 - 使用任意一个UI元素
-                    Stage currentStage = (Stage) logoutButton.getScene().getWindow();
+                // 获取当前窗口 - 使用任意一个UI元素
+                Stage currentStage = (Stage) logoutButton.getScene().getWindow();
 
-                    // 关闭当前窗口
-                    currentStage.close();
-                    mainApp.showLoginWindow();
-                    // 注意：不需要再调用 mainApp.showLoginWindow()
-                    // 因为窗口的关闭事件已经在 MainApp 中设置了
+                // 关闭当前窗口
+                currentStage.close();
+                mainApp.showLoginWindow();
+                // 注意：不需要再调用 mainApp.showLoginWindow()
+                // 因为窗口的关闭事件已经在 MainApp 中设置了
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    AlertUtil.showErrorAlert("错误", "退出登录失败：" + e.getMessage());
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                AlertUtil.showErrorAlert("错误", "退出登录失败：" + e.getMessage());
             }
-        });
+        }
     }
 
     /*private void showAlert(String title, String message) {
